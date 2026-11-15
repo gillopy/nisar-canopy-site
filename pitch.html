@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NISAR Canopy · Pitch en siete paradas</title>
+<meta name="description" content="El pitch de NISAR Canopy en siete paradas: el problema, la consola, el método, el resultado, la verificación, el uso y hasta dónde llega.">
+<meta name="theme-color" content="#08080a">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2308080a'/%3E%3Ccircle cx='16' cy='16' r='7' fill='%235e6ad2'/%3E%3C/svg%3E">
+<style>
+:root {
+  --bg: #08080a;
+  --text: #ececf1;
+  --muted: #9b9baa;
+  --dim: #6c6c7a;
+  --iris: #5e6ad2;
+  --loss: #ff6b4a;
+  --ok: #46c08a;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+img { display: block; max-width: 100%; }
+
+/* ---------- estructura ---------- */
+
+.deck {
+  display: grid;
+  grid-template-columns: minmax(0, 47%) minmax(0, 53%);
+  align-items: start;
+}
+
+.deck__media {
+  position: sticky;
+  top: 0;
+  order: 2;
+  height: 100vh;
+  overflow: hidden;
+  background: #050507;
+}
+
+.deck__media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(90deg, rgba(8, 8, 10, 0.85) 0%, rgba(8, 8, 10, 0.25) 9%, rgba(8, 8, 10, 0) 26%);
+}
+
+.panel {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  display: none;
+}
+
+.panel.is-active { display: block; }
+
+.panel img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.panel--contain img {
+  object-fit: contain;
+  padding: 22px;
+}
+
+.panel figcaption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 42px 18px 16px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--muted);
+  background: linear-gradient(0deg, rgba(5, 5, 7, 0.96) 42%, rgba(5, 5, 7, 0));
+}
+
+/* ---------- diapositivas ---------- */
+
+.deck__steps { order: 1; }
+
+.slide {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 12vh 5vw 12vh 7vw;
+  scroll-snap-align: start;
+}
+
+.kicker {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 22px;
+  font-size: 11.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--iris);
+}
+
+.kicker::after {
+  content: "";
+  height: 1px;
+  width: 48px;
+  background: var(--iris);
+  opacity: 0.5;
+}
+
+.slide h1,
+.slide h2 {
+  margin: 0 0 22px;
+  font-size: clamp(1.85rem, 3.1vw, 2.9rem);
+  line-height: 1.04;
+  letter-spacing: -0.035em;
+  font-weight: 640;
+  text-wrap: balance;
+}
+
+.slide h1 { font-size: clamp(2rem, 3.6vw, 3.4rem); }
+
+.accent { color: var(--iris); }
+
+.lead {
+  margin: 0;
+  max-width: 40ch;
+  font-size: clamp(1rem, 1.35vw, 1.15rem);
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+.lead strong { color: var(--text); font-weight: 600; }
+
+.big {
+  margin: 34px 0 0;
+  font-size: clamp(2.6rem, 6.5vw, 5.2rem);
+  line-height: 1;
+  letter-spacing: -0.045em;
+  font-weight: 660;
+  font-variant-numeric: tabular-nums;
+  color: var(--ok);
+}
+
+.big small {
+  display: block;
+  margin-top: 10px;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 500;
+  color: var(--dim);
+}
+
+.note {
+  margin: 30px 0 0;
+  padding-left: 16px;
+  border-left: 2px solid var(--iris);
+  max-width: 42ch;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--muted);
+}
+
+.steps-inline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 30px 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+.steps-inline li {
+  padding: 7px 13px;
+  border: 1px solid #232329;
+  border-radius: 999px;
+}
+
+.steps-inline b { color: var(--text); font-weight: 600; }
+
+.close-line {
+  margin: 40px 0 0;
+  max-width: 22ch;
+  font-size: clamp(1.4rem, 3.1vw, 2.2rem);
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+  color: var(--text);
+}
+
+/* ---------- interfaz fija ---------- */
+
+.bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 30;
+  height: 2px;
+  width: 0;
+  background: var(--iris);
+  transition: width 0.12s linear;
+}
+
+.brand {
+  position: fixed;
+  top: 22px;
+  left: 7vw;
+  z-index: 30;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+.brand b { color: var(--text); letter-spacing: 0.06em; font-weight: 640; }
+
+.dots {
+  position: fixed;
+  right: 26px;
+  top: 50%;
+  z-index: 30;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.dots button {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: #3c3c48;
+  box-shadow: 0 0 0 3px rgba(5, 5, 7, 0.55);
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.dots button.is-active { background: var(--iris); transform: scale(1.5); }
+
+.dots button:focus-visible { outline: 2px solid var(--iris); outline-offset: 3px; }
+
+.hint {
+  position: fixed;
+  bottom: 22px;
+  left: 7vw;
+  z-index: 30;
+  font-size: 11.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--dim);
+  transition: opacity 0.4s ease;
+}
+
+.hint.is-hidden { opacity: 0; }
+
+/* ---------- móvil ---------- */
+
+@media (max-width: 880px) {
+  .deck { display: block; }
+
+  .deck__media {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    height: 38vh;
+    border-bottom: 1px solid #1a1a20;
+  }
+
+  .deck__media::after { background: linear-gradient(180deg, rgba(8, 8, 10, 0) 55%, rgba(8, 8, 10, 0.92) 100%); }
+
+  .panel--contain img { padding: 2vh 3vw; }
+
+  .panel figcaption { display: none; }
+
+  .slide { min-height: 62vh; padding: 7vh 7vw 9vh; }
+
+  .dots { display: none; }
+
+  .brand {
+    left: 12px;
+    top: 12px;
+    padding: 6px 11px;
+    font-size: 10.5px;
+    border-radius: 999px;
+    background: rgba(8, 8, 10, 0.72);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+
+  .hint { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .dots button { transition: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="bar" id="bar" aria-hidden="true"></div>
+<p class="brand"><b>NISAR Canopy</b> · Space Apps 2026</p>
+
+<main class="deck" id="deck">
+
+  <div class="deck__media">
+    <figure class="panel is-active" data-panel="1">
+      <img src="img/pitch-antes-radar.webp" alt="Retrodispersión HV del Chaco el 20 de enero de 2026">
+      <figcaption>Banda HV, 20 de enero de 2026. El radar ve la estructura del bosque, no su color.</figcaption>
+    </figure>
+    <figure class="panel panel--contain" data-panel="2">
+      <img src="img/consola.webp" alt="La consola NISAR Canopy con una caja dibujada sobre el Chaco">
+      <figcaption>La consola, con una caja sobre el Chaco y el historial de corridas.</figcaption>
+    </figure>
+    <figure class="panel panel--contain" data-panel="3">
+      <img src="img/consola-panel.webp" alt="Panel de análisis con producto, fechas, modo y umbrales">
+      <figcaption>Producto, par de fechas, modo y umbrales: el plan de la corrida.</figcaption>
+    </figure>
+    <figure class="panel" data-panel="4">
+      <img src="img/pitch-mascara.webp" alt="Máscara de pérdida de HV del Chaco entre enero y marzo de 2026">
+      <figcaption>Pérdida de HV entre el 20 de enero y el 21 de marzo de 2026.</figcaption>
+    </figure>
+    <figure class="panel panel--contain" data-panel="5">
+      <img src="img/panel-registros.webp" alt="Columnas de estadísticas y registro de cada paso de la corrida">
+      <figcaption>Las columnas de la corrida y el registro con marca de tiempo de cada paso.</figcaption>
+    </figure>
+    <figure class="panel" data-panel="6">
+      <img src="img/corrida_regional.webp" alt="Antes, después y máscara de pérdida de una corrida regional">
+      <figcaption>Una corrida regional: antes, después y la pérdida marcada.</figcaption>
+    </figure>
+    <figure class="panel panel--contain" data-panel="7">
+      <img src="img/panel-escenas.webp" alt="Consola con ocho escenas NISAR y sus huellas sobre el mapa">
+      <figcaption>Ocho escenas sobre la misma caja. Cada una, una fecha más de la serie.</figcaption>
+    </figure>
+  </div>
+
+  <div class="deck__steps" id="steps">
+
+    <section class="slide" data-slide="1">
+      <p class="kicker">01 · El problema</p>
+      <h1>El desmonte ocurre<br><span class="accent">cuando no se ve</span></h1>
+      <p class="lead">
+        En el Chaco, la temporada de lluvias tapa el bosque justo cuando avanza el desmonte. La
+        ventana óptica se cierra durante meses, y con ella el monitoreo.
+      </p>
+      <p class="note">
+        Armar una imagen limpia con Sentinel-2 en enero costó <strong>doce escenas por fecha</strong>.
+      </p>
+    </section>
+
+    <section class="slide" data-slide="2">
+      <p class="kicker">02 · Qué es</p>
+      <h2>Una consola abierta para la misión NISAR</h2>
+      <p class="lead">
+        Dibujás una caja sobre el mapa, elegís dos fechas y la consola devuelve el cambio medido
+        sobre esas imágenes. Corre en local o en Docker, y el código es abierto.
+      </p>
+      <p class="big">3<small>familias de producto: cobertura, humedad, interferometría</small></p>
+    </section>
+
+    <section class="slide" data-slide="3">
+      <p class="kicker">03 · Cómo funciona</p>
+      <h2>De una caja a un número, con comprobante</h2>
+      <p class="lead">
+        Busca las escenas que cruzan la caja, elige el par de fechas y ejecuta el análisis.
+        Queda el PNG, el GeoTIFF, el JSON y el plan exacto de comandos.
+      </p>
+      <ul class="steps-inline">
+        <li><b>01</b> la caja</li>
+        <li><b>02</b> el par de fechas</li>
+        <li><b>03</b> el análisis</li>
+        <li><b>04</b> el comprobante</li>
+      </ul>
+    </section>
+
+    <section class="slide" data-slide="4">
+      <p class="kicker">04 · Qué encuentra</p>
+      <h2>262,9 hectáreas <span class="accent">contra 2,1</span></h2>
+      <p class="lead">
+        Mismo par de imágenes, mismo umbral. El desmonte pierde 262,9 ha; el bosque intacto a
+        9,8 km pierde 2,1.
+      </p>
+      <p class="big">125 : 1<small>relación entre el desmonte y su control</small></p>
+    </section>
+
+    <section class="slide" data-slide="5">
+      <p class="kicker">05 · Por qué confiar</p>
+      <h2>No te pido que me creas</h2>
+      <p class="lead">
+        Control pareado, barrido de umbral, ventanas de doce días y el óptico sobre la misma
+        grilla. El rojo es pérdida que el radar vio y el NDVI confirmó.
+      </p>
+      <p class="big" style="color: var(--text)">45<small>tests sin red, y el plan de comandos de cada corrida</small></p>
+    </section>
+
+    <section class="slide" data-slide="6">
+      <p class="kicker">06 · A quién le sirve</p>
+      <h2>Días de trabajo,<br>en una corrida</h2>
+      <p class="lead">
+        Hoy medir un desmonte es bajar dos gigas, alinear grillas a mano y repetir todo para la
+        otra fecha. La cifra le sirve a INFONA, a MADES, a municipios y a universidades.
+      </p>
+      <p class="note">
+        <strong>1,8 GB</strong> por escena, y dos escenas por comparación.
+      </p>
+    </section>
+
+    <section class="slide" data-slide="7">
+      <p class="kicker">07 · Hasta dónde</p>
+      <h2>El radar ya ve de noche y con nubes</h2>
+      <p class="lead">
+        Falta validación en campo, corrección por ángulo de incidencia y un flujo con alertas.
+        La misma señal sirve para inundaciones, incendios y humedad del suelo.
+      </p>
+      <p class="close-line">Lo que falta es que la cifra llegue a tiempo a quien decide.</p>
+    </section>
+
+  </div>
+</main>
+
+<nav class="dots" id="dots" aria-label="Ir a una parada"></nav>
+<p class="hint" id="hint">Bajá o usá las flechas</p>
+
+<script>
+(function () {
+  "use strict";
+
+  var deck = document.getElementById("deck");
+  var stepsHost = document.getElementById("steps");
+  var slides = Array.prototype.slice.call(stepsHost.querySelectorAll(".slide"));
+  var panels = Array.prototype.slice.call(deck.querySelectorAll(".panel"));
+  var bar = document.getElementById("bar");
+  var dotsHost = document.getElementById("dots");
+  var hint = document.getElementById("hint");
+
+  var dots = slides.map(function (slide, i) {
+    var b = document.createElement("button");
+    b.type = "button";
+    b.setAttribute("aria-label", "Parada " + (i + 1));
+    b.addEventListener("click", function () {
+      slide.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+    dotsHost.appendChild(b);
+    return b;
+  });
+
+  var actual = -1;
+  var ticking = false;
+
+  function pintar(indice) {
+    if (indice === actual) return;
+    actual = indice;
+
+    slides.forEach(function (s, i) {
+      s.classList.toggle("is-active", i === indice);
+    });
+    panels.forEach(function (p, i) {
+      p.classList.toggle("is-active", i === indice);
+    });
+    dots.forEach(function (d, i) {
+      d.classList.toggle("is-active", i === indice);
+    });
+    if (indice > 0 && hint) hint.classList.add("is-hidden");
+  }
+
+  function medir() {
+    ticking = false;
+
+    var medio = window.innerHeight * 0.5;
+    var mejor = 0;
+    var menor = Infinity;
+
+    slides.forEach(function (s, i) {
+      var caja = s.getBoundingClientRect();
+      var centro = caja.top + caja.height / 2;
+      var distancia = Math.abs(centro - medio);
+      if (distancia < menor) {
+        menor = distancia;
+        mejor = i;
+      }
+    });
+
+    pintar(mejor);
+
+    var total = document.documentElement.scrollHeight - window.innerHeight;
+    var avance = total > 0 ? (window.scrollY / total) * 100 : 0;
+    bar.style.width = Math.max(0, Math.min(100, avance)) + "%";
+  }
+
+  function pedirMedicion() {
+    if (!ticking) {
+      ticking = true;
+      window.requestAnimationFrame(medir);
+    }
+  }
+
+  function ir(indice) {
+    var destino = slides[Math.max(0, Math.min(slides.length - 1, indice))];
+    if (destino) destino.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  document.addEventListener("keydown", function (ev) {
+    if (ev.key === "ArrowDown" || ev.key === "PageDown" || ev.key === "ArrowRight") {
+      ev.preventDefault();
+      ir(actual + 1);
+    } else if (ev.key === "ArrowUp" || ev.key === "PageUp" || ev.key === "ArrowLeft") {
+      ev.preventDefault();
+      ir(actual - 1);
+    } else if (ev.key === "Home") {
+      ev.preventDefault();
+      ir(0);
+    } else if (ev.key === "End") {
+      ev.preventDefault();
+      ir(slides.length - 1);
+    }
+  });
+
+  window.addEventListener("scroll", pedirMedicion, { passive: true });
+  window.addEventListener("resize", pedirMedicion);
+  medir();
+})();
+</script>
+</body>
+</html>
