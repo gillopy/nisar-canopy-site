@@ -39,17 +39,17 @@
     <div class="hero__grid">
     <div class="hero__text">
     <p class="eyebrow">NISAR Canopy · NASA Space Apps Challenge 2026 · Dancing with the SARs</p>
-    <h1>El desmonte avanza<br><span class="accent">cuando el cielo se cierra</span></h1>
+    <h1>Cuando llueve, el Chaco se borra<br><span class="accent">de las imágenes ópticas</span></h1>
     <p class="lede">
-      En el Chaco, la temporada de lluvias coincide con el avance del desmonte y las imágenes
-      ópticas se van en nubes. <strong>NISAR Canopy</strong> abre la otra ventana: dibujás una
-      caja en el mapa, elegís dos fechas y la consola devuelve las hectáreas perdidas, con el
-      radar y el óptico en la misma grilla.
+      Entre enero y marzo la temporada de lluvias tapa el Chaco, y es justo cuando avanza el
+      desmonte. <strong>NISAR Canopy</strong> mide igual: dibujás una caja en el mapa, elegís
+      dos fechas y la consola devuelve las hectáreas perdidas. La banda L atraviesa la nube y
+      no necesita luz solar.
     </p>
     <p class="lede lede--intro">
-      Lo que antes era bajar dos gigas por escena, alinear grillas a mano y correr scripts
-      sueltos, ahora es una corrida que deja su comprobante. Acá está el caso medido: qué
-      encontramos, cómo sabemos que no es ruido y qué no prueba.
+      Una escena pesa casi dos gigas. Alinearla con la otra fecha, corregir el ángulo, separar
+      el ruido del cambio real: eso lleva días y no deja registro de cómo se hizo. Acá cada
+      corrida guarda su plan de comandos, así el número se puede repetir.
     </p>
 
     <div class="chips">
@@ -79,9 +79,9 @@
     <div class="stats" id="stats"></div>
 
     <p class="pitch">
-      <strong>Lo distinto no es un algoritmo nuevo:</strong> es radar y óptico sobre la misma
-      grilla, control pareado y el plan exacto de comandos de cada corrida. Un resultado que se
-      vuelve a producir, no una captura de pantalla.
+      Radar y óptico, píxel a píxel, sobre la misma grilla. El rojo es pérdida que el radar vio
+      y el NDVI confirmó; el naranja, lo que el radar vio y la máscara de bosque no alcanzó. La
+      novedad está en esa verificación, no en un algoritmo nuevo.
     </p>
     <details class="en" lang="en">
       <summary>English summary for international judges</summary>
@@ -113,11 +113,7 @@
   <section id="historia" class="section scrolly-section">
     <div class="wrap">
       <p class="index">01</p>
-      <h2>Qué es NISAR Canopy, contado mientras bajás</h2>
-      <p class="prose">
-        Cinco paradas: qué es, para qué sirve, cómo se usa, qué mide y qué logró. El panel de
-        la izquierda cambia con cada una.
-      </p>
+      <h2>Qué es NISAR Canopy</h2>
 
       <div class="scrolly" data-scrolly>
         <div class="scrolly__visual">
@@ -148,11 +144,10 @@
             <p class="scrolly__kicker">Qué es</p>
             <h3>Una consola abierta para la misión NISAR</h3>
             <p>
-              NISAR Canopy es una aplicación web: dibujás una caja sobre el mapa, busca las
-              escenas de radar de la misión que la cruzan y corre el análisis que elijas.
-              Backend en FastAPI, frontend en React con Leaflet y el pipeline de radar en
-              Python, cada trabajo como subproceso cancelable con progreso en vivo. Corre en
-              local o en Docker.
+              Una consola para la misión NISAR. Dibujás una caja sobre el mapa y aparece la
+              lista de escenas que la cruzan, con fecha, órbita y miniatura. Elegís dos, elegís
+              el análisis y lo corrés. El trabajo corre como subproceso cancelable, con
+              progreso en vivo, en local o en Docker.
             </p>
             <figure class="scrolly-step__fig">
               <img src="img/consola.webp" alt="Captura de la consola NISAR Canopy con una caja de análisis dibujada sobre el Chaco" loading="lazy" decoding="async">
@@ -163,12 +158,10 @@
             <p class="scrolly__kicker">Para qué sirve</p>
             <h3>Para medir lo que el óptico no llega a ver</h3>
             <p>
-              En el Chaco la temporada de lluvias coincide con el avance del desmonte: en enero
-              la caja de estudio aparece parcialmente anegada y una sola imagen se va en nubes.
-              Armar una escena limpia con Sentinel-2 costó <strong>doce por fecha</strong>.
-              NISAR lleva dos radares, en banda L y en banda S; acá se usa el de banda L, que
-              mide la estructura de la superficie y llega completa de noche y con el cielo
-              cubierto.
+              En enero el Chaco está anegado y nublado. Para armar una imagen limpia con
+              Sentinel-2 hicieron falta <strong>doce escenas por fecha</strong>. NISAR no compite
+              con eso: mide otra cosa, la estructura de la superficie, y llega completa de noche
+              y con el cielo cubierto.
             </p>
             <figure class="scrolly-step__fig">
               <img src="img/mascara_total.webp" alt="Máscara de pérdida de HV entre el 20 de enero y el 21 de marzo de 2026" loading="lazy" decoding="async">
@@ -179,10 +172,10 @@
             <p class="scrolly__kicker">Cómo se usa</p>
             <h3>Cuatro pasos y el comprobante queda guardado</h3>
             <p>
-              El visor devuelve las escenas con su imagen de browse, así se elige el par de
-              fechas antes de bajar un <code>.h5</code> de cientos de megabytes. Cada corrida
-              deja PNG, GeoTIFF y un JSON con estadísticas, más el log con el plan exacto de
-              comandos: el resultado se repite, no se cree.
+              El visor devuelve las escenas con su miniatura, así elegís el par antes de bajar
+              un <code>.h5</code> de casi dos gigas. Corrés el análisis y quedan el PNG, el
+              GeoTIFF y un JSON con las estadísticas. Con ellos, el log con el plan exacto de
+              comandos.
             </p>
             <ol class="mini-steps">
               <li><strong>Dibujás la caja.</strong> Las escenas que la cruzan, con track, frame y fecha.</li>
@@ -199,10 +192,10 @@
             <p class="scrolly__kicker">Qué mide</p>
             <h3>Tres familias de producto, con una sola escena</h3>
             <p>
-              GCOV mide cambio de cobertura con ocho análisis y verificación Sentinel-2
-              opcional. SME2 mide humedad del suelo a 200 m con tres algoritmos que se pueden
-              comparar entre sí. GUNW mide coherencia y fase del par de doce días. Cada
-              producto responde una pregunta distinta sobre la misma escena.
+              GCOV compara la escena con otra fecha: cambio de cobertura, serie temporal, agua,
+              incendio. SME2 saca humedad del suelo a 200 m con tres algoritmos que se pueden
+              comparar entre sí. GUNW mide coherencia y fase del par de doce días. Son
+              preguntas distintas sobre la misma escena.
             </p>
             <figure class="scrolly-step__fig">
               <img src="img/sme2_comparar.webp" alt="Comparación de los tres algoritmos de humedad del suelo SME2" loading="lazy" decoding="async">
@@ -219,7 +212,7 @@
               bloques coherentes y cero en su control.
             </p>
             <p class="scrolly__next">
-              Lo que sigue es cómo se probó, qué no prueba y hasta dónde puede llegar.
+              El caso completo está abajo.
               <a href="#caso-chaco">Ir al caso medido <span aria-hidden="true">→</span></a>
             </p>
             <figure class="scrolly-step__fig">
@@ -232,7 +225,7 @@
       <div class="grid-3 grid-3--tight">
         <article class="block block--stat">
           <span class="fig-num">108 s → 18 s</span>
-          <p>Una corrida de cambio con índices ópticos, con caché fría y con caché tibia.</p>
+          <p>El mismo análisis con el compuesto óptico en caché fría y en caché tibia.</p>
         </article>
         <article class="block block--stat">
           <span class="fig-num">45</span>
@@ -240,15 +233,13 @@
         </article>
         <article class="block block--stat">
           <span class="fig-num">97,4 % → 97,8 %</span>
-          <p>Cobertura del compuesto óptico con 2 y con 8 ítems: el 65 % más de tiempo no compra casi nada.</p>
+          <p>Cobertura del compuesto óptico con 2 y con 8 escenas. El 65 % más de tiempo no compra casi nada.</p>
         </article>
       </div>
 
       <h3 class="sub" id="por-dentro">Así se ve por dentro</h3>
       <p class="prose">
-        Cuatro capturas de la consola corriendo en local: la búsqueda de escenas y las capas
-        sobre el mapa, el panel de trabajos, los resultados de una corrida y las columnas de
-        estadísticas con el registro paso a paso.
+        La consola por dentro, tal como corre en local.
       </p>
 
       <div class="gallery">
@@ -268,9 +259,9 @@
             <img src="img/panel-trabajos.webp?v=2" alt="Panel de trabajos con corridas listas, una con error y otra cancelada, y el detalle de la corrida elegida">
           </a>
           <figcaption>
-            El panel de trabajos: veinte corridas con estado —listo, error, cancelado— y fecha.
-            La elegida muestra producto, tamaño de píxel, la caja exacta y el plan de pasos que
-            ejecutó.
+            El panel de trabajos: veinte corridas con su estado y su fecha. Hay listas, una con
+            error y otra cancelada. La elegida muestra producto, tamaño de píxel, la caja exacta
+            y el plan de pasos que ejecutó.
           </figcaption>
         </figure>
 
@@ -289,10 +280,9 @@
             <img src="img/panel-registros.webp" alt="Columnas de estadísticas de la corrida y registro con marcas de tiempo de cada paso">
           </a>
           <figcaption>
-            Las columnas de estadísticas —pérdida, umbral, HV mínimo, persistencia, modo,
-            resolución— y el registro con marca de tiempo de cada paso: apertura del
-            <code>.h5</code>, multillook, corrección del par, búsqueda de Sentinel-2 ítem por
-            ítem.
+            Las columnas de estadísticas de la corrida y, debajo, el registro con marca de
+            tiempo de cada paso: apertura del <code>.h5</code>, multillook, corrección del par,
+            búsqueda de Sentinel-2 ítem por ítem.
           </figcaption>
         </figure>
       </div>
@@ -338,8 +328,7 @@
       <p class="prose">
         Entre el 20 de enero y el 21 de marzo de 2026 el radar encontró
         <strong>262,9 ha</strong> de caída de HV por debajo de −3 dB: el 7,3 % de la caja y el
-        9,7 % del bosque. Los bloques son rectangulares y están alineados: el patrón del
-        desmonte mecanizado, no el de un incendio ni el de una inundación.
+        9,7 % del bosque. Los bloques son rectangulares y están alineados a un reticulado.
       </p>
 
       <div class="split split--three">
@@ -356,8 +345,7 @@
           </div>
           <figcaption>
             <span class="fig-num fig-num--loss" id="numDesmonte">262,9 ha</span><br>
-            Desmonte. 7,3 % del área y 9,7 % del bosque. Los bloques rectangulares y alineados
-            son el patrón del desmonte mecanizado.
+            Desmonte. 7,3 % del área y 9,7 % del bosque.
           </figcaption>
         </figure>
         <figure class="panel">
@@ -431,14 +419,13 @@
 
       <h3 class="sub" id="por-que">¿Por qué pasó?</h3>
       <p class="prose">
-        La forma sugiere más que cualquier estadística: bloques rectangulares, contiguos y con
-        bordes rectos, alineados a un reticulado. Es el patrón de habilitación de pastura o
-        agricultura, no el de un incendio ni el de una tala selectiva.
+        La forma lo dice antes que cualquier estadística: bloques rectangulares, contiguos, con
+        bordes rectos y alineados a un reticulado. Así se habilita pastura o agricultura. Un
+        incendio deja otro dibujo.
       </p>
       <p class="prose">
-        Conviene ser preciso con lo que eso significa: este trabajo mide <strong>el cambio de
-        estructura y su fecha</strong>, y la verificación óptica confirma qué se ve en el
-        suelo. Atribuir la causa a un cultivo o a un establecimiento concreto pide catastros y
+        Cuidado con lo que eso significa: este trabajo mide <strong>el cambio de estructura y
+        su fecha</strong>, y la verificación óptica confirma qué se ve en el suelo. Atribuir la causa a un cultivo o a un establecimiento concreto pide catastros y
         trabajo de campo, y por eso queda como próximo paso y no como conclusión.
       </p>
     </div>
@@ -449,9 +436,10 @@
       <p class="index">04</p>
       <h2>Caso 2 · El Este, a 10 metros y en otra estación</h2>
       <p class="prose">
-        El mismo procedimiento, sin un cambio, sobre otra escena: <strong>76.668 ha</strong>,
-        82 % de bosque, 10 m por píxel y 48 días entre fechas, en invierno. El objetivo era
-        comprobar si el método dependía del lugar, de la resolución o de la época del año.
+        La misma receta, sin cambios, sobre otra escena y en otra estación:
+        <strong>76.668 ha</strong>, 82 % de bosque, 10 m por píxel y 48 días entre fechas, en
+        invierno. Servía para saber si el método dependía del lugar, de la resolución o de la
+        época.
       </p>
 
       <div class="split split--caso">
@@ -506,9 +494,9 @@
       <p class="index">05</p>
       <h2>Cómo sabemos que no es ruido</h2>
       <p class="prose">
-        Cuatro pruebas independientes: un control al lado, el barrido del umbral, la
-        comparación entre ventanas cortas y largas, y una segunda fuente de datos. Ninguna
-        alcanza sola; juntas sostienen la conclusión.
+        Lo primero fue medir un bosque que no cambió: mismas escenas, mismo umbral, una caja de
+        control a 9,8 km. Devolvió 2,1 ha. Después vinieron el barrido de umbral, la comparación
+        entre ventanas largas y cortas, y una segunda fuente de datos.
       </p>
 
       <details class="deep deep--first">
@@ -552,9 +540,9 @@
       </p>
       <div class="cards" id="cards"></div>
       <p class="prose prose--tight">
-        La consecuencia práctica es que el detector de cambio de NISAR es utilizable en pares
-        adyacentes y no en comparaciones de varios meses. Sin declarar esa condición,
-        cualquier cifra de deforestación tomada de un par lejano es indefendible.
+        El detector de cambio de NISAR sirve para pares adyacentes, no para comparaciones de
+        varios meses. Sin declarar esa condición, cualquier cifra de deforestación tomada de un
+        par lejano es indefendible.
       </p>
 
       <h3 class="sub">El umbral no está elegido a dedo</h3>
@@ -622,7 +610,7 @@
       <p class="prose">
         A 10 m hay cuatro veces más píxeles por hectárea que a 20 m. El mismo cambio se reparte
         en más unidades y el conteo directo de píxeles sobre el umbral crece con la resolución.
-        Ese conteo no es una propiedad del terreno: es una consecuencia del muestreo. Por eso
+        Ese conteo mide el muestreo tanto como el terreno. Por eso
         el área que se informa es la de componentes coherentes, y aun así se declara como
         rango.
       </p>
@@ -647,8 +635,8 @@
       <h3 class="sub">La prueba que más pesa: una reserva protegida</h3>
       <p class="prose">
         Si el detector marca desmonte en la región, dentro de un área protegida debería marcar
-        poco. Se repiten las mismas escenas de junio y agosto de 2026 —mismo track, mismo
-        procesamiento— y se achica la caja a la Reserva Mbaracayú: 9.762 ha con un 89 % de
+        poco. Se repiten las escenas de junio y agosto de 2026, mismo track y mismo
+        procesamiento, y se achica la caja a la Reserva Mbaracayú: 9.762 ha con un 89 % de
         bosque. No hay descarga nueva, solo otro recorte.
       </p>
       <div class="split split--caso">
@@ -685,16 +673,15 @@
             </table>
           </div>
           <p class="tech-note">
-            Misma escena, misma ventana de 60 días. La diferencia no es el método: es el
-            terreno.
+            Misma escena, misma ventana de 60 días. Lo que cambia es el terreno.
           </p>
         </div>
       </div>
       <p class="callout">
         El detector crudo marca 218,9 ha, pero son píxeles sueltos: el fragmento mediano mide
         0,02 ha, ruido de la imagen de radar. Al exigir bloques de media hectárea quedan
-        <strong>4,4 ha en siete manchas</strong>, la mayor de 0,9 ha. El control —459 ha dentro
-        de la misma caja— produce cero bloques. En esta ventana la reserva no muestra desmonte
+        <strong>4,4 ha en siete manchas</strong>, la mayor de 0,9 ha. El control, 459 ha dentro
+        de la misma caja, produce cero bloques. En esta ventana la reserva no muestra desmonte
         a escala de parcela, mientras la región que la rodea sí.
       </p>
 
@@ -739,16 +726,16 @@
       <p class="index">06</p>
       <h2>Lo que esta página no prueba</h2>
       <p class="prose">
-        Un resultado honesto declara su alcance. Estas son las limitaciones del método y del
-        producto, incluidas las que reducen lo que se puede afirmar.
+        Estas son las razones por las que este resultado podría estar equivocado, en orden de
+        importancia.
       </p>
       <p class="callout">
         La primera es la que un especialista en radar va a buscar: <strong>la retrodispersión
         no es solo cobertura</strong>. La humedad del suelo, la lluvia y el ángulo de
         incidencia mueven el brillo de la escena sin que el terreno cambie. Acá se controla de
-        tres maneras —ventanas de 12 días, un bosque de control medido con las mismas imágenes
-        y la diferencia entre HV y HH— y ninguna de las tres convierte al detector en un
-        inventario forestal.
+        tres maneras: ventanas de 12 días, un bosque de control medido con las mismas imágenes y
+        la diferencia entre HV y HH. Ninguna de las tres convierte al detector en un inventario
+        forestal.
       </p>
       <ul class="limits" id="limits"></ul>
     </div>
@@ -759,17 +746,16 @@
       <p class="index">07</p>
       <h2>Para qué sirve, y hasta dónde puede llegar</h2>
       <p class="prose">
-        El monitoreo de bosque se apoya en imágenes ópticas, y en el Chaco eso significa
-        depender del cielo. Un detector de radar con comprobante reproducible no reemplaza ese
-        monitoreo: lo cubre donde el óptico se queda sin datos, y lo hace con una cifra que se
-        puede auditar.
+        Medir un desmonte con NISAR hoy significa abrir ASF Vertex, bajar dos gigas, cargar el
+        <code>.h5</code> en un notebook y repetir el mismo procedimiento a mano para la fecha
+        anterior. Son días por caja, y el resultado no lo puede revisar nadie más.
       </p>
       <p class="prose">
-        Usuarios posibles, ninguno comprometido: el Instituto Forestal Nacional (INFONA), el
-        Ministerio del Ambiente y Desarrollo Sostenible (MADES), gobernaciones y
-        municipalidades, organizaciones ambientales, universidades y grupos de investigación,
-        y cooperativas o productores que necesiten verificar una denuncia con evidencia
-        propia.
+        Con ese trabajo ya hecho, la cifra le sirve a quien decide: el Instituto Forestal
+        Nacional (INFONA), el Ministerio del Ambiente y Desarrollo Sostenible (MADES),
+        gobernaciones y municipalidades, organizaciones ambientales, universidades. También a un
+        productor que necesite verificar una denuncia con evidencia propia. Ninguno de ellos es
+        usuario todavía; son los que podrían serlo.
       </p>
 
       <div class="grid-3">
@@ -804,8 +790,8 @@
 
       <h3 class="sub">La misma señal sirve para más de una pregunta</h3>
       <p class="prose">
-        Dos de las extensiones no son una promesa: el producto de agua y el de incendio ya
-        existen en la consola. Lo que falta es el flujo operativo alrededor.
+        El producto de agua y el de incendio ya existen en la consola. Lo que falta es el flujo
+        operativo alrededor.
       </p>
       <div class="grid-3">
         <article class="block">
@@ -833,16 +819,12 @@
       </div>
 
       <p class="callout">
-        Esto es una primera versión. Mide dos casos, con un método explícito y sus límites
-        escritos. Lo que sigue no es una promesa de producto: es la lista de lo que falta para
-        que el mismo flujo sirva de forma operativa, y con datos de campo puede volverse una
-        herramienta bastante más completa.
+        Es una primera versión: dos casos, un método explícito y sus límites escritos. Con datos
+        de campo puede volverse una herramienta bastante más completa.
       </p>
 
       <p class="closing" id="cierre">
-        El Chaco se puede medir sin depender de que esté despejado. Eso es lo que deja este
-        proyecto: no un visor más, sino una forma de mirar que no se corta con la temporada de
-        lluvias.
+        El Chaco se puede medir sin esperar a que esté despejado.
       </p>
     </div>
   </section>
