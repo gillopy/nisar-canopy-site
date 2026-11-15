@@ -23,8 +23,7 @@
   <div class="nav__inner">
     <a class="nav__brand" href="#top">NISAR Canopy</a>
     <div class="nav__links" id="navLinks">
-      <a href="#problema">Problema</a>
-      <a href="#consola">La consola</a>
+      <a href="#historia">Historia</a>
       <a href="#caso-chaco">Caso Chaco</a>
       <a href="#caso-este">Caso Este</a>
       <a href="#validacion">Cómo lo probamos</a>
@@ -56,7 +55,7 @@
 
     <div class="chips">
       <a class="chip" href="#caso-chaco">El resultado en 30 segundos <span aria-hidden="true">→</span></a>
-      <a class="chip" href="#consola">Cómo funciona la consola <span aria-hidden="true">→</span></a>
+      <a class="chip" href="#como-se-usa">Cómo funciona la consola <span aria-hidden="true">→</span></a>
       <a class="chip" href="#limites">Qué no prueba esto <span aria-hidden="true">→</span></a>
     </div>
     </div>
@@ -107,158 +106,123 @@
 
 <main>
 
-  <section id="problema" class="section">
+  <section id="historia" class="section scrolly-section">
     <div class="wrap">
       <p class="index">01</p>
-      <h2>El monitoreo óptico se corta justo cuando el desmonte avanza</h2>
+      <h2>Qué es NISAR Canopy, contado mientras bajás</h2>
       <p class="prose">
-        En el Chaco, la temporada de lluvias coincide con el avance del desmonte. En enero la
-        caja de estudio aparece parcialmente anegada y una sola imagen se va en nubes. NISAR
-        lleva dos radares, en banda L y en banda S; este trabajo usa el de banda L, que mide
-        la estructura de la superficie y llega completa aunque el cielo esté cubierto. La
-        pregunta que ordena el proyecto es concreta: <strong>¿se puede medir cuánto, dónde y
-        cuándo se perdió dosel, con un comprobante que otro pueda repetir?</strong>
+        Cinco paradas: qué es, para qué sirve, cómo se usa, qué mide y qué logró. El panel de
+        la izquierda cambia con cada una.
       </p>
 
-      <div class="grid-3">
-        <article class="block">
-          <h3>El óptico necesita cielo despejado</h3>
-          <p>
-            Sentinel-2 no atraviesa nubes. Para armar una imagen limpia del Chaco en enero
-            hicieron falta <strong>doce escenas por fecha</strong>, mediana temporal y máscara
-            de nubes. El radar no tiene ese problema: la escena llega entera y de noche.
-          </p>
-        </article>
-        <article class="block">
-          <h3>El radar mide otra cosa</h3>
-          <p>
-            Un radar no ve bosque: ve cómo rebota la microonda. La humedad del suelo, la
-            lluvia y la geometría de adquisición mueven la retrodispersión sin que el árbol se
-            haya movido. Tratar cada cambio de brillo como deforestación es el error clásico,
-            y acá se trata como tal: con control, con firma polarimétrica y con el límite
-            escrito.
-          </p>
-        </article>
-        <article class="block">
-          <h3>Y hay que poder repetirlo</h3>
-          <p>
-            Una cifra sin comando no se puede auditar. Cada corrida guarda el plan exacto de
-            comandos, las estadísticas en JSON y los GeoTIFF, así el número se vuelve a
-            producir en vez de creerse.
-          </p>
-        </article>
-      </div>
-    </div>
-  </section>
+      <div class="scrolly" data-scrolly>
+        <div class="scrolly__visual">
+          <figure class="scrolly__panel is-active" data-panel="1">
+            <img src="img/consola.webp" alt="">
+            <figcaption>La consola, con una caja dibujada sobre el Chaco.</figcaption>
+          </figure>
+          <figure class="scrolly__panel scrolly__panel--cover" data-panel="2">
+            <img src="img/mascara_total.webp" alt="">
+            <figcaption>La pérdida de HV del 20 de enero al 21 de marzo: bloques alineados, desmonte.</figcaption>
+          </figure>
+          <figure class="scrolly__panel" data-panel="3">
+            <img src="img/consola-panel.webp" alt="">
+            <figcaption>El panel de análisis: producto, fechas, modo y umbrales.</figcaption>
+          </figure>
+          <figure class="scrolly__panel" data-panel="4">
+            <img src="img/sme2_comparar.webp" alt="">
+            <figcaption>SME2: humedad del suelo a 200 m con los tres algoritmos.</figcaption>
+          </figure>
+          <figure class="scrolly__panel" data-panel="5">
+            <img src="img/corrida_regional.webp" alt="">
+            <figcaption>Una corrida completa: antes, después y la pérdida marcada.</figcaption>
+          </figure>
+        </div>
 
-  <section id="consola" class="section section--guia">
-    <div class="wrap">
-      <p class="index">02</p>
-      <h2>La consola: de una caja en el mapa a un resultado auditable</h2>
-      <p class="prose">
-        <strong>NISAR Canopy</strong> es la herramienta con la que se produjo todo lo que
-        sigue. Backend en FastAPI, frontend en React con Leaflet y el pipeline de radar en
-        Python, cada trabajo como subproceso cancelable con progreso en vivo. Corre en local o
-        en Docker, con el build del frontend ya incluido.
-      </p>
+        <div class="scrolly__steps">
+          <article class="scrolly-step is-active" data-step="1">
+            <p class="scrolly__kicker">Qué es</p>
+            <h3>Una consola abierta para la misión NISAR</h3>
+            <p>
+              NISAR Canopy es una aplicación web: dibujás una caja sobre el mapa, busca las
+              escenas de radar de la misión que la cruzan y corre el análisis que elijas.
+              Backend en FastAPI, frontend en React con Leaflet y el pipeline de radar en
+              Python, cada trabajo como subproceso cancelable con progreso en vivo. Corre en
+              local o en Docker.
+            </p>
+            <figure class="scrolly-step__fig">
+              <img src="img/consola.webp" alt="Captura de la consola NISAR Canopy con una caja de análisis dibujada sobre el Chaco" loading="lazy" decoding="async">
+            </figure>
+          </article>
 
-      <figure class="panel panel--shot">
-        <a href="img/consola.webp" target="_blank" rel="noopener">
-          <img src="img/consola.webp" alt="Captura de la consola NISAR Canopy con una caja de análisis dibujada sobre el Chaco">
-        </a>
-        <figcaption>
-          La consola, con una caja dibujada sobre el mapa. A la izquierda, el análisis y sus
-          parámetros; al centro, el mapa con las huellas de las escenas que cruzan la caja; a
-          la derecha, los productos y las estadísticas de la corrida. Captura real de la
-          aplicación, con otra corrida cargada; clic para verla completa.
-        </figcaption>
-      </figure>
+          <article class="scrolly-step" data-step="2">
+            <p class="scrolly__kicker">Para qué sirve</p>
+            <h3>Para medir lo que el óptico no llega a ver</h3>
+            <p>
+              En el Chaco la temporada de lluvias coincide con el avance del desmonte: en enero
+              la caja de estudio aparece parcialmente anegada y una sola imagen se va en nubes.
+              Armar una escena limpia con Sentinel-2 costó <strong>doce por fecha</strong>.
+              NISAR lleva dos radares, en banda L y en banda S; acá se usa el de banda L, que
+              mide la estructura de la superficie y llega completa de noche y con el cielo
+              cubierto.
+            </p>
+            <figure class="scrolly-step__fig">
+              <img src="img/mascara_total.webp" alt="Máscara de pérdida de HV entre el 20 de enero y el 21 de marzo de 2026" loading="lazy" decoding="async">
+            </figure>
+          </article>
 
-      <ol class="guia">
-        <li class="guia__step">
-          <span class="guia__n" aria-hidden="true">01</span>
-          <h3>Dibujás una caja en el mapa</h3>
-          <p>
-            El visor consulta la API de ASF y devuelve las escenas NISAR que cruzan la caja,
-            con track, frame, fecha y nivel de producto. No hay que escribir coordenadas.
-          </p>
-        </li>
-        <li class="guia__step">
-          <span class="guia__n" aria-hidden="true">02</span>
-          <h3>Elegís el par de fechas</h3>
-          <p>
-            Cada escena trae su imagen de browse, así se ve qué se está eligiendo antes de
-            bajar el <code>.h5</code>, que pesa cientos de megabytes y pide credenciales
-            Earthdata. La búsqueda y el browse no piden login.
-          </p>
-        </li>
-        <li class="guia__step">
-          <span class="guia__n" aria-hidden="true">03</span>
-          <h3>Elegís el producto</h3>
-          <p>
-            Ocho análisis sobre GCOV —recorte, RVI, cambio, serie, GeoTIFF, agua, incendio y
-            fusión óptica—, humedad del suelo SME2 a 200 m con sus tres algoritmos, o
-            interferometría GUNW con coherencia y fase.
-          </p>
-        </li>
-        <li class="guia__step">
-          <span class="guia__n" aria-hidden="true">04</span>
-          <h3>Corrés el job y te llevás el comprobante</h3>
-          <p>
-            Cada corrida deja PNG, GeoTIFF y un JSON con estadísticas, más el log con el plan
-            exacto de comandos. El panel de trabajos guarda el historial: el resultado no es
-            una captura, es algo que otro puede repetir.
-          </p>
-        </li>
-      </ol>
+          <article class="scrolly-step" id="como-se-usa" data-step="3">
+            <p class="scrolly__kicker">Cómo se usa</p>
+            <h3>Cuatro pasos y el comprobante queda guardado</h3>
+            <p>
+              El visor devuelve las escenas con su imagen de browse, así se elige el par de
+              fechas antes de bajar un <code>.h5</code> de cientos de megabytes. Cada corrida
+              deja PNG, GeoTIFF y un JSON con estadísticas, más el log con el plan exacto de
+              comandos: el resultado se repite, no se cree.
+            </p>
+            <ol class="mini-steps">
+              <li><strong>Dibujás la caja.</strong> Las escenas que la cruzan, con track, frame y fecha.</li>
+              <li><strong>Elegís el par.</strong> Con browse, antes de descargar.</li>
+              <li><strong>Elegís el producto.</strong> GCOV, SME2 o GUNW.</li>
+              <li><strong>Corrés el job.</strong> Y te llevás el comprobante.</li>
+            </ol>
+            <figure class="scrolly-step__fig">
+              <img src="img/consola-panel.webp" alt="Panel de análisis de la consola con producto, fechas, modo y umbrales" loading="lazy" decoding="async">
+            </figure>
+          </article>
 
-      <div class="grid-3 grid-3--tight">
-        <article class="block">
-          <h3>GCOV · cambio de cobertura</h3>
-          <p>
-            Ocho análisis sobre la escena geocodificada. Con la verificación Sentinel-2 activa
-            suma un panel de NDVI, NDBI y NDWI sobre la misma grilla del radar, para comparar
-            la firma óptica con la caída de HV píxel a píxel.
-          </p>
-        </article>
-        <article class="block">
-          <h3>SME2 · humedad del suelo</h3>
-          <p>
-            Humedad a 200 m con tres algoritmos (DSG, PMI, TSR) y una opción que compara los
-            tres e informa cobertura, calidad, medianas y acuerdo entre pares. Colección
-            provisional: no es una capa absoluta calibrada.
-          </p>
-        </article>
-        <article class="block">
-          <h3>GUNW · interferometría de 12 días</h3>
-          <p>
-            Coherencia y fase del par de doce días, envuelta y desenvuelta. Sirve como
-            diagnóstico relativo: la fase no trae corrección atmosférica.
-          </p>
-        </article>
-      </div>
+          <article class="scrolly-step" data-step="4">
+            <p class="scrolly__kicker">Qué mide</p>
+            <h3>Tres familias de producto, con una sola escena</h3>
+            <p>
+              GCOV mide cambio de cobertura con ocho análisis y verificación Sentinel-2
+              opcional. SME2 mide humedad del suelo a 200 m con tres algoritmos que se pueden
+              comparar entre sí. GUNW mide coherencia y fase del par de doce días. Cada
+              producto responde una pregunta distinta sobre la misma escena.
+            </p>
+            <figure class="scrolly-step__fig">
+              <img src="img/sme2_comparar.webp" alt="Comparación de los tres algoritmos de humedad del suelo SME2" loading="lazy" decoding="async">
+            </figure>
+          </article>
 
-      <div class="split split--figs">
-        <figure class="panel">
-          <a href="img/corrida_regional.webp" target="_blank" rel="noopener">
-            <img src="img/corrida_regional.webp" alt="Antes y después de una corrida regional de cambio de HV, con la pérdida confirmada en rojo">
-          </a>
-          <figcaption>
-            Lo que devuelve una corrida: antes, después y máscara sobre una ventana de 50 km.
-            En esta prueba el umbral fue de −2,5 dB, la pérdida confirmada va en rojo y la
-            candidata en naranja: 419 ha, el 0,1 % del área.
-          </figcaption>
-        </figure>
-        <figure class="panel">
-          <a href="img/sme2_comparar.webp" target="_blank" rel="noopener">
-            <img src="img/sme2_comparar.webp" alt="Comparación de los tres algoritmos de humedad del suelo SME2 sobre la misma caja">
-          </a>
-          <figcaption>
-            Otra familia de producto: humedad del suelo a 200 m con los tres algoritmos (DSG,
-            PMI, TSR). Cada panel trae su mediana y el porcentaje de píxeles limpios; comparar
-            los tres es la opción de validación que trae la consola.
-          </figcaption>
-        </figure>
+          <article class="scrolly-step" data-step="5">
+            <p class="scrolly__kicker">Qué logra</p>
+            <h3>Dos desmontes medidos, con control pareado</h3>
+            <p>
+              En el Chaco, <strong>262,9 ha</strong> de caída de HV por debajo de −3 dB contra
+              <strong>2,1 ha</strong> en un bosque intacto a 9,8 km, medidos con las mismas
+              imágenes y el mismo umbral. En el Este, a 10 m, <strong>291,5 ha</strong> en
+              bloques coherentes y cero en su control.
+            </p>
+            <p class="scrolly__next">
+              Lo que sigue es cómo se probó, qué no prueba y hasta dónde puede llegar.
+              <a href="#caso-chaco">Ir al caso medido <span aria-hidden="true">→</span></a>
+            </p>
+            <figure class="scrolly-step__fig">
+              <img src="img/corrida_regional.webp" alt="Antes, después y máscara de pérdida de una corrida regional" loading="lazy" decoding="async">
+            </figure>
+          </article>
+        </div>
       </div>
 
       <div class="grid-3 grid-3--tight">
@@ -307,41 +271,14 @@
         desmonte mecanizado, no el de un incendio ni el de una inundación.
       </p>
 
-      <div class="split">
+      <div class="split split--three">
         <figure class="panel">
           <div id="mapa" class="map"></div>
           <figcaption>
-            Polígono del desmonte en rojo y polígono de control en gris. Proyección local
-            equirectangular; la grilla se traza cada 5 km.
+            Polígono del desmonte en rojo y polígono de control en gris, a 9,8 km. Proyección
+            local equirectangular; la grilla se traza cada 5 km.
           </figcaption>
         </figure>
-        <figure class="slider-fig slider-fig--half">
-          <div class="slider" id="s2Slider">
-            <img class="slider__img" src="img/s2_antes.webp" alt="Sentinel-2 color real del 22 de enero de 2026, Chaco">
-            <img class="slider__img slider__after" id="s2SliderAfter" src="img/s2_despues.webp" alt="Sentinel-2 color real del 27 de marzo de 2026, Chaco">
-            <div class="slider__divider" id="s2SliderDivider"></div>
-            <span class="slider__tag slider__tag--l">22 ene 2026</span>
-            <span class="slider__tag slider__tag--r">27 mar 2026</span>
-          </div>
-          <input class="slider__range" id="s2SliderRange" type="range" min="0" max="100" value="50" step="0.5"
-                 aria-label="Comparar Sentinel-2 del 22 de enero con el 27 de marzo en el Chaco">
-          <figcaption>
-            La misma caja en Sentinel-2 L2A, 10 m: mediana de doce escenas por fecha y nubes
-            enmascaradas. El radar dice dónde; el óptico confirma qué se ve.
-          </figcaption>
-        </figure>
-      </div>
-
-      <figure class="panel panel--wide">
-        <img src="img/s2_indices.webp" alt="Color, cambio de NDVI, cambio de NDBI, cambio de NDWI y NDVI final del Chaco">
-        <figcaption>
-          Arriba: color de enero, color de marzo y cambio de NDVI. Abajo: cambio de NDBI,
-          cambio de NDWI y NDVI de marzo. Dentro de la banda el NDVI cae y el NDBI sube: menos
-          infrarrojo cercano y más SWIR, la firma de suelo descubierto.
-        </figcaption>
-      </figure>
-
-      <div class="split">
         <figure class="panel">
           <div class="panel__media panel__media--radar">
             <img src="img/mascara_total.webp" alt="Máscara de pérdida de HV entre el 20 de enero y el 21 de marzo de 2026">
@@ -359,6 +296,33 @@
           <figcaption>
             <span class="fig-num fig-num--ok" id="numControl">2,1 ha</span><br>
             Control. Mismo par de fechas, mismo umbral: sin bloques de cambio apreciables.
+          </figcaption>
+        </figure>
+      </div>
+
+      <h3 class="sub">La misma caja, vista por Sentinel-2</h3>
+      <div class="split">
+        <figure class="slider-fig slider-fig--half">
+          <div class="slider" id="s2Slider">
+            <img class="slider__img" src="img/s2_antes.webp" alt="Sentinel-2 color real del 22 de enero de 2026, Chaco" loading="eager">
+            <img class="slider__img slider__after" id="s2SliderAfter" src="img/s2_despues.webp" alt="Sentinel-2 color real del 27 de marzo de 2026, Chaco" loading="eager">
+            <div class="slider__divider" id="s2SliderDivider"></div>
+            <span class="slider__tag slider__tag--l">22 ene 2026</span>
+            <span class="slider__tag slider__tag--r">27 mar 2026</span>
+          </div>
+          <input class="slider__range" id="s2SliderRange" type="range" min="0" max="100" value="50" step="0.5"
+                 aria-label="Comparar Sentinel-2 del 22 de enero con el 27 de marzo en el Chaco">
+          <figcaption>
+            La misma caja en Sentinel-2 L2A, 10 m: mediana de doce escenas por fecha y nubes
+            enmascaradas. El radar dice dónde; el óptico confirma qué se ve.
+          </figcaption>
+        </figure>
+        <figure class="panel">
+          <img src="img/s2_indices.webp" alt="Color, cambio de NDVI, cambio de NDBI, cambio de NDWI y NDVI final del Chaco">
+          <figcaption>
+            Arriba: color de enero, color de marzo y cambio de NDVI. Abajo: cambio de NDBI,
+            cambio de NDWI y NDVI de marzo. Dentro de la banda el NDVI cae y el NDBI sube: menos
+            infrarrojo cercano y más SWIR, la firma de suelo descubierto.
           </figcaption>
         </figure>
       </div>
@@ -650,10 +614,8 @@
         a escala de parcela, mientras la región que la rodea sí.
       </p>
 
-      <details class="deep">
-        <summary>Ver la reserva con Sentinel-2, antes de que existieran escenas NISAR</summary>
-        <div class="deep__body">
-          <p class="prose prose--tight">
+      <h3 class="sub">La misma reserva en Sentinel-2, antes de que existieran las escenas NISAR</h3>
+          <p class="prose">
             NISAR no tiene imágenes de la reserva antes del 19 de junio de 2026. Ese período se
             cubrió con Sentinel-2, restringido al polígono del área protegida: 8.840 ha de
             bosque dentro de una caja de 9.719 ha. La pérdida entre julio y octubre de 2025 son
@@ -677,8 +639,6 @@
           <div class="table-wrap">
             <table id="tablaReserva"></table>
           </div>
-        </div>
-      </details>
 
       <figure class="panel">
         <img src="img/reserva_nisar_mascara.webp" alt="Pérdida de HV dentro de la reserva con unidad mínima de mapeo de media hectárea">
@@ -861,6 +821,7 @@
 <script src="tecnico.js"></script>
 <script src="este.js"></script>
 <script src="app.js"></script>
+<script src="scrolly.js"></script>
 <script src="nav.js"></script>
 </body>
 </html>

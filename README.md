@@ -3,7 +3,7 @@
 Página estática del proyecto, pensada para publicarse y para que la abra alguien que no
 conoce el trabajo. No tiene backend, no descarga nada y no depende de internet.
 
-- Cuenta **qué es NISAR Canopy** y cómo se usa (sección "La consola").
+- Cuenta **qué es NISAR Canopy** y cómo se usa en una sección de scrollytelling ("Historia").
 - Cuenta **dos resultados medidos**: desmonte en el Chaco y en el Este de Paraguay.
 - Muestra **cómo se probó**: control pareado, barrido de umbral, ventanas cortas contra
   largas, firma polarimétrica y verificación Sentinel-2.
@@ -104,6 +104,7 @@ caso-chaco/
   styles.css      estilos
   nav.js          navegación, progreso de lectura, carga diferida
   app.js          render de stats, slider, mapa SVG, barras, tabla, histograma
+  scrolly.js      cambia el panel de la sección Historia según el paso visible
   data.js         números del caso Chaco (única fuente de verdad)
   tecnico.js      indicadores del Chaco, calculados por tools/tecnico.py
   este.js         segundo caso: Este de Paraguay, 10 m/px

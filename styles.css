@@ -1058,3 +1058,172 @@ h3.sub + .prose { margin-bottom: 24px; }
 .split--figs .panel a { flex: 1; display: flex; }
 
 .split--figs .panel img { object-fit: cover; width: 100%; }
+
+/* ---------- scrollytelling ---------- */
+
+.scrolly-section {
+  background: linear-gradient(180deg, rgba(94, 106, 210, 0.06), rgba(94, 106, 210, 0) 34%);
+}
+
+.scrolly {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  gap: 44px;
+  align-items: start;
+  margin-top: 8px;
+}
+
+.scrolly__visual {
+  position: sticky;
+  top: 86px;
+  height: min(68vh, 560px);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #0c0c10;
+  overflow: hidden;
+}
+
+.scrolly__panel {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  opacity: 0;
+  transition: opacity 0.45s ease;
+}
+
+.scrolly__panel.is-active { opacity: 1; }
+
+.scrolly__panel img { width: 100%; height: 100%; object-fit: contain; }
+
+.scrolly__panel figcaption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 28px 16px 12px;
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--muted);
+  background: linear-gradient(0deg, rgba(8, 8, 10, 0.94), rgba(8, 8, 10, 0));
+}
+
+.scrolly__steps { display: grid; gap: 7vh; }
+
+.scrolly-step {
+  min-height: 46vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 18px;
+  border-left: 1px solid var(--line);
+  opacity: 0.4;
+  transition: opacity 0.35s ease, border-color 0.35s ease;
+}
+
+.scrolly-step.is-active { opacity: 1; border-left-color: var(--iris); }
+
+.scrolly__kicker {
+  margin: 0 0 8px;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--iris);
+}
+
+.scrolly-step h3 {
+  margin: 0 0 10px;
+  font-size: clamp(1.15rem, 2.1vw, 1.45rem);
+  letter-spacing: -0.02em;
+  font-weight: 620;
+}
+
+.scrolly-step p {
+  margin: 0 0 12px;
+  max-width: 46ch;
+  font-size: 14.5px;
+  line-height: 1.65;
+  color: var(--muted);
+}
+
+.scrolly-step p strong { color: var(--text); font-weight: 600; }
+
+.scrolly-step code { font-size: 0.88em; }
+
+.scrolly-step p.scrolly__next { font-size: 13.5px; }
+
+.scrolly__next a { color: var(--iris); text-decoration: none; }
+
+.scrolly-step__fig { display: none; }
+
+.mini-steps {
+  margin: 0 0 4px;
+  padding: 0;
+  list-style: none;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+.mini-steps li { position: relative; padding: 4px 0 4px 24px; }
+
+.mini-steps li::before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  color: var(--iris);
+}
+
+.mini-steps strong { color: var(--text); font-weight: 600; }
+
+@media (max-width: 900px) {
+  .scrolly { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .scrolly__visual { display: none; }
+  .scrolly__steps { gap: 36px; }
+  .scrolly-step {
+    min-height: 0;
+    opacity: 1;
+    padding-left: 0;
+    border-left: 0;
+  }
+  .scrolly-step__fig {
+    display: block;
+    margin: 16px 0 0;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: #0c0c10;
+  }
+  .scrolly-step__fig img { display: block; width: 100%; height: auto; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scrolly__panel, .scrolly-step { transition: none; }
+}
+
+.split--three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+.split--three .panel__media--radar,
+.split--three .panel__media--control { aspect-ratio: 4 / 3; }
+
+@media (max-width: 900px) {
+  .split--three { grid-template-columns: minmax(0, 1fr); }
+}
+
+.scrolly { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); }
+
+.scrolly__visual { height: min(56vh, 400px); }
+
+.scrolly__panel--cover img { object-fit: cover; object-position: center top; }
+
+.scrolly__panel figcaption {
+  background: linear-gradient(0deg, rgba(8, 8, 10, 0.97) 46%, rgba(8, 8, 10, 0));
+  padding: 34px 14px 10px;
+  font-size: 11.5px;
+}
+
+/* El panel activo se conmuta directo: una transicion de opacidad puede quedar
+   a mitad de camino y dejar el panel invisible. */
+.scrolly__panel { display: none; opacity: 1; transition: none; }
+.scrolly__panel.is-active { display: block; }
+
+.scrolly__visual { height: min(62vh, 470px); }
