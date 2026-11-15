@@ -240,6 +240,71 @@
         </article>
       </div>
 
+      <h3 class="sub" id="por-dentro">Así se ve por dentro</h3>
+      <p class="prose">
+        Cuatro capturas de la consola corriendo en local: la búsqueda de escenas y las capas
+        sobre el mapa, el panel de trabajos, las columnas de estadísticas con el registro paso
+        a paso, y lo que deja una corrida terminada.
+      </p>
+
+      <div class="split split--figs">
+        <figure class="panel">
+          <a href="img/panel-escenas.webp" target="_blank" rel="noopener">
+            <img src="img/panel-escenas.webp" alt="Consola con una caja sobre el Chaco, dos escenas NISAR listadas, la huella de la escena elegida sobre el mapa y el panel de trabajos">
+          </a>
+          <figcaption>
+            Búsqueda por caja y capas sobre el mapa. A la izquierda, las dos escenas que cruzan
+            la caja con su browse, órbita y peso; en el centro, la huella de la escena elegida;
+            arriba a la derecha, el historial de trabajos.
+          </figcaption>
+        </figure>
+        <figure class="panel">
+          <a href="img/panel-trabajos.webp" target="_blank" rel="noopener">
+            <img src="img/panel-trabajos.webp" alt="Panel de trabajos con veinte corridas, estados y la corrida seleccionada con su producto y su caja">
+          </a>
+          <figcaption>
+            El panel de trabajos: veinte corridas con estado y fecha. La elegida muestra
+            producto, tamaño de píxel, la caja exacta y el plan de dos pasos que ejecutó.
+          </figcaption>
+        </figure>
+      </div>
+
+      <figure class="panel panel--wide">
+        <a href="img/panel-registros.webp" target="_blank" rel="noopener">
+          <img src="img/panel-registros.webp" alt="Columnas de estadísticas de la corrida y registro con marcas de tiempo de cada paso">
+        </a>
+        <figcaption>
+          Las columnas de estadísticas —pérdida, umbral, HV mínimo, persistencia, modo,
+          resolución— y el registro con marca de tiempo de cada paso: apertura del <code>.h5</code>,
+          multillook, corrección del par, búsqueda de Sentinel-2 ítem por ítem.
+        </figcaption>
+      </figure>
+
+      <div class="split split--figs split--balance">
+        <figure class="panel panel--narrow">
+          <a href="img/panel-resultados.webp" target="_blank" rel="noopener">
+            <img src="img/panel-resultados.webp" alt="Resultados de una corrida: seis capas derivadas, el antes y el después del radar con la pérdida marcada y la lista de archivos">
+          </a>
+          <figcaption>
+            Resultados de una corrida: seis capas derivadas y el antes/después del radar con la
+            pérdida marcada, más la lista de archivos que quedó en disco.
+          </figcaption>
+        </figure>
+        <article class="block block--loose">
+          <h3>Qué queda de cada corrida</h3>
+          <ul class="block__list">
+            <li>El PNG y el GeoTIFF de cada capa, con la misma grilla del radar.</li>
+            <li>Un JSON con las estadísticas que alimentan esas columnas.</li>
+            <li>El registro completo con el plan exacto de comandos.</li>
+            <li>El historial: la corrida se puede volver a abrir o repetir después.</li>
+          </ul>
+          <p class="tech-note">
+            Esta galería sale de una instalación local con datos reales del Chaco; ninguna
+            captura fue armada a mano.
+          </p>
+        </article>
+      </div>
+
       <p class="callout">
         Esta página muestra <strong>lo que la app produce</strong>, no la app en vivo: la
         aplicación corre en local o en Docker y necesita credenciales de Earthdata para bajar
