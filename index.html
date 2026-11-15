@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NISAR Canopy · El desmonte del Chaco medido con radar</title>
+<meta name="description" content="NISAR Canopy es una consola abierta para la misión NISAR: buscás escenas de radar, corrés el análisis que elijas y te llevás el comprobante. Con ella medimos dos desmontes en Paraguay y los contrastamos contra bosque intacto.">
+<meta name="theme-color" content="#08080a">
+<meta property="og:type" content="website">
+<meta property="og:title" content="NISAR Canopy · El desmonte del Chaco medido con radar">
+<meta property="og:description" content="Una consola abierta para la misión NISAR. Dos desmontes medidos con banda L, verificados contra bosque intacto y contra Sentinel-2.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2308080a'/%3E%3Ccircle cx='16' cy='16' r='7' fill='%235e6ad2'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body id="top">
+
+<nav class="nav" aria-label="Secciones de la página">
+  <div class="nav__progress" id="readProgress" aria-hidden="true"></div>
+  <div class="nav__inner">
+    <a class="nav__brand" href="#top">NISAR Canopy</a>
+    <div class="nav__links" id="navLinks">
+      <a href="#problema">Problema</a>
+      <a href="#consola">La consola</a>
+      <a href="#caso-chaco">Caso Chaco</a>
+      <a href="#caso-este">Caso Este</a>
+      <a href="#validacion">Cómo lo probamos</a>
+      <a href="#limites">Límites</a>
+      <a href="#impacto">Impacto</a>
+    </div>
+    <a class="nav__repo" href="https://github.com/gillopy/nisar-canopy" data-repo hidden>Repositorio</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="hero__grid">
+    <div class="hero__text">
+    <p class="eyebrow">NISAR Canopy · NASA Space Apps Challenge 2026 · Dancing with the SARs</p>
+    <h1>El desmonte del Chaco, medido con radar<br><span class="accent">y contrastado contra bosque intacto</span></h1>
+    <p class="lede">
+      La banda L de NISAR atraviesa las nubes y no necesita luz solar, justo cuando el
+      monitoreo óptico se queda sin datos. Con esa señal medimos cuánto dosel se perdió,
+      dónde y en qué par de doce días, y lo comparamos contra un bosque sin intervención
+      usando las mismas imágenes y el mismo umbral.
+    </p>
+    <p class="lede lede--intro">
+      Todo salió de <strong>NISAR Canopy</strong>, la consola abierta que construimos para
+      buscar escenas de la misión, correr los análisis y guardar el comprobante de cada
+      corrida. Esta página cuenta qué es, qué encontramos y hasta dónde llega: el método, el
+      control, la verificación óptica y los límites, con las cifras reproducibles.
+    </p>
+
+    <div class="chips">
+      <a class="chip" href="#caso-chaco">El resultado en 30 segundos <span aria-hidden="true">→</span></a>
+      <a class="chip" href="#consola">Cómo funciona la consola <span aria-hidden="true">→</span></a>
+      <a class="chip" href="#limites">Qué no prueba esto <span aria-hidden="true">→</span></a>
+    </div>
+    </div>
+
+    <figure class="slider-fig slider-fig--hero">
+      <div class="slider" id="slider">
+        <img class="slider__img" src="img/antes_0120.webp" alt="Retrodispersión HV del 20 de enero de 2026, Chaco">
+        <img class="slider__img slider__after" id="sliderAfter" src="img/despues_0321.webp" alt="Retrodispersión HV del 21 de marzo de 2026, Chaco">
+        <div class="slider__divider" id="sliderDivider"></div>
+        <span class="slider__tag slider__tag--l">20 ene 2026</span>
+        <span class="slider__tag slider__tag--r">21 mar 2026</span>
+      </div>
+      <input class="slider__range" id="sliderRange" type="range" min="0" max="100" value="50" step="0.5"
+             aria-label="Comparar la escena del 20 de enero con la del 21 de marzo en el Chaco">
+      <figcaption>
+        Chaco paraguayo, banda HV, 20 m por píxel. Misma escala de grises en las dos fechas
+        (−17 a −9 dB): lo que cambia es el terreno, no el contraste. Arrastrá la línea.
+      </figcaption>
+    </figure>
+    </div>
+
+    <div class="stats" id="stats"></div>
+
+    <details class="en" lang="en">
+      <summary>English summary for international judges</summary>
+      <div class="en__body">
+        <p><strong>NISAR Canopy</strong> is an open-source web console for the NASA-ISRO NISAR
+        L-band radar record. You draw a box on a map, the app lists every NISAR granule that
+        crosses it, and it runs the analysis you pick: amplitude change, radar vegetation
+        index, multi-date time series, water and fire masks, 200 m soil moisture (SME2), or
+        12-day interferometric coherence and phase (GUNW). Each run leaves PNG, GeoTIFF and
+        JSON artifacts plus the exact command plan, so any number can be reproduced.</p>
+        <p><strong>Result:</strong> in the Paraguayan Chaco, HV backscatter dropped by more
+        than 3 dB over <strong>245 ha</strong> after a 0.5 ha minimum mapping unit, between
+        20 January and 21 March 2026, against <strong>2.1 ha</strong> in an adjacent control
+        box of untouched forest <strong>9.8 km away</strong>, measured with the same images
+        and the same threshold. A second scene in eastern Paraguay at 10 m resolution keeps
+        <strong>291.5 ha</strong> of coherent blocks; its control keeps none.</p>
+        <p><strong>What it does not prove:</strong> the product is PROVISIONAL, the 3 dB
+        threshold is not calibrated against field data, radar measures structure and not
+        biomass, backscatter also responds to soil moisture and acquisition geometry, and the
+        reported area depends on the scale, so it is given as a range. Every limitation is
+        listed in section 06.</p>
+      </div>
+    </details>
+  </div>
+</header>
+
+<main>
+
+  <section id="problema" class="section">
+    <div class="wrap">
+      <p class="index">01</p>
+      <h2>El monitoreo óptico se corta justo cuando el desmonte avanza</h2>
+      <p class="prose">
+        En el Chaco, la temporada de lluvias coincide con el avance del desmonte. En enero la
+        caja de estudio aparece parcialmente anegada y una sola imagen se va en nubes. NISAR
+        lleva dos radares, en banda L y en banda S; este trabajo usa el de banda L, que mide
+        la estructura de la superficie y llega completa aunque el cielo esté cubierto. La
+        pregunta que ordena el proyecto es concreta: <strong>¿se puede medir cuánto, dónde y
+        cuándo se perdió dosel, con un comprobante que otro pueda repetir?</strong>
+      </p>
+
+      <div class="grid-3">
+        <article class="block">
+          <h3>El óptico necesita cielo despejado</h3>
+          <p>
+            Sentinel-2 no atraviesa nubes. Para armar una imagen limpia del Chaco en enero
+            hicieron falta <strong>doce escenas por fecha</strong>, mediana temporal y máscara
+            de nubes. El radar no tiene ese problema: la escena llega entera y de noche.
+          </p>
+        </article>
+        <article class="block">
+          <h3>El radar mide otra cosa</h3>
+          <p>
+            Un radar no ve bosque: ve cómo rebota la microonda. La humedad del suelo, la
+            lluvia y la geometría de adquisición mueven la retrodispersión sin que el árbol se
+            haya movido. Tratar cada cambio de brillo como deforestación es el error clásico,
+            y acá se trata como tal: con control, con firma polarimétrica y con el límite
+            escrito.
+          </p>
+        </article>
+        <article class="block">
+          <h3>Y hay que poder repetirlo</h3>
+          <p>
+            Una cifra sin comando no se puede auditar. Cada corrida guarda el plan exacto de
+            comandos, las estadísticas en JSON y los GeoTIFF, así el número se vuelve a
+            producir en vez de creerse.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="consola" class="section section--guia">
+    <div class="wrap">
+      <p class="index">02</p>
+      <h2>La consola: de una caja en el mapa a un resultado auditable</h2>
+      <p class="prose">
+        <strong>NISAR Canopy</strong> es la herramienta con la que se produjo todo lo que
+        sigue. Backend en FastAPI, frontend en React con Leaflet y el pipeline de radar en
+        Python, cada trabajo como subproceso cancelable con progreso en vivo. Corre en local o
+        en Docker, con el build del frontend ya incluido.
+      </p>
+
+      <figure class="panel panel--shot">
+        <a href="img/consola.webp" target="_blank" rel="noopener">
+          <img src="img/consola.webp" alt="Captura de la consola NISAR Canopy con una caja de análisis dibujada sobre el Chaco">
+        </a>
+        <figcaption>
+          La consola, con una caja dibujada sobre el mapa. A la izquierda, el análisis y sus
+          parámetros; al centro, el mapa con las huellas de las escenas que cruzan la caja; a
+          la derecha, los productos y las estadísticas de la corrida. Captura real de la
+          aplicación, con otra corrida cargada; clic para verla completa.
+        </figcaption>
+      </figure>
+
+      <ol class="guia">
+        <li class="guia__step">
+          <span class="guia__n" aria-hidden="true">01</span>
+          <h3>Dibujás una caja en el mapa</h3>
+          <p>
+            El visor consulta la API de ASF y devuelve las escenas NISAR que cruzan la caja,
+            con track, frame, fecha y nivel de producto. No hay que escribir coordenadas.
+          </p>
+        </li>
+        <li class="guia__step">
+          <span class="guia__n" aria-hidden="true">02</span>
+          <h3>Elegís el par de fechas</h3>
+          <p>
+            Cada escena trae su imagen de browse, así se ve qué se está eligiendo antes de
+            bajar el <code>.h5</code>, que pesa cientos de megabytes y pide credenciales
+            Earthdata. La búsqueda y el browse no piden login.
+          </p>
+        </li>
+        <li class="guia__step">
+          <span class="guia__n" aria-hidden="true">03</span>
+          <h3>Elegís el producto</h3>
+          <p>
+            Ocho análisis sobre GCOV —recorte, RVI, cambio, serie, GeoTIFF, agua, incendio y
+            fusión óptica—, humedad del suelo SME2 a 200 m con sus tres algoritmos, o
+            interferometría GUNW con coherencia y fase.
+          </p>
+        </li>
+        <li class="guia__step">
+          <span class="guia__n" aria-hidden="true">04</span>
+          <h3>Corrés el job y te llevás el comprobante</h3>
+          <p>
+            Cada corrida deja PNG, GeoTIFF y un JSON con estadísticas, más el log con el plan
+            exacto de comandos. El panel de trabajos guarda el historial: el resultado no es
+            una captura, es algo que otro puede repetir.
+          </p>
+        </li>
+      </ol>
+
+      <div class="grid-3 grid-3--tight">
+        <article class="block">
+          <h3>GCOV · cambio de cobertura</h3>
+          <p>
+            Ocho análisis sobre la escena geocodificada. Con la verificación Sentinel-2 activa
+            suma un panel de NDVI, NDBI y NDWI sobre la misma grilla del radar, para comparar
+            la firma óptica con la caída de HV píxel a píxel.
+          </p>
+        </article>
+        <article class="block">
+          <h3>SME2 · humedad del suelo</h3>
+          <p>
+            Humedad a 200 m con tres algoritmos (DSG, PMI, TSR) y una opción que compara los
+            tres e informa cobertura, calidad, medianas y acuerdo entre pares. Colección
+            provisional: no es una capa absoluta calibrada.
+          </p>
+        </article>
+        <article class="block">
+          <h3>GUNW · interferometría de 12 días</h3>
+          <p>
+            Coherencia y fase del par de doce días, envuelta y desenvuelta. Sirve como
+            diagnóstico relativo: la fase no trae corrección atmosférica.
+          </p>
+        </article>
+      </div>
+
+      <div class="split split--figs">
+        <figure class="panel">
+          <a href="img/corrida_regional.webp" target="_blank" rel="noopener">
+            <img src="img/corrida_regional.webp" alt="Antes y después de una corrida regional de cambio de HV, con la pérdida confirmada en rojo">
+          </a>
+          <figcaption>
+            Lo que devuelve una corrida: antes, después y máscara sobre una ventana de 50 km.
+            En esta prueba el umbral fue de −2,5 dB, la pérdida confirmada va en rojo y la
+            candidata en naranja: 419 ha, el 0,1 % del área.
+          </figcaption>
+        </figure>
+        <figure class="panel">
+          <a href="img/sme2_comparar.webp" target="_blank" rel="noopener">
+            <img src="img/sme2_comparar.webp" alt="Comparación de los tres algoritmos de humedad del suelo SME2 sobre la misma caja">
+          </a>
+          <figcaption>
+            Otra familia de producto: humedad del suelo a 200 m con los tres algoritmos (DSG,
+            PMI, TSR). Cada panel trae su mediana y el porcentaje de píxeles limpios; comparar
+            los tres es la opción de validación que trae la consola.
+          </figcaption>
+        </figure>
+      </div>
+
+      <div class="grid-3 grid-3--tight">
+        <article class="block block--stat">
+          <span class="fig-num">108 s → 18 s</span>
+          <p>Una corrida de cambio con índices ópticos, con caché fría y con caché tibia.</p>
+        </article>
+        <article class="block block--stat">
+          <span class="fig-num">45</span>
+          <p>Tests sin red sobre el contrato de la API, la validación de la caja y el plan de cada producto.</p>
+        </article>
+        <article class="block block--stat">
+          <span class="fig-num">97,4 % → 97,8 %</span>
+          <p>Cobertura del compuesto óptico con 2 y con 8 ítems: el 65 % más de tiempo no compra casi nada.</p>
+        </article>
+      </div>
+
+      <p class="callout">
+        Esta página muestra <strong>lo que la app produce</strong>, no la app en vivo: la
+        aplicación corre en local o en Docker y necesita credenciales de Earthdata para bajar
+        los productos. El código es MIT, versión 0.1.0, y la imagen está publicada en
+        <code>ghcr.io/gillopy/nisar-canopy</code>.
+      </p>
+
+      <div class="guia__links">
+        <a class="btn" href="https://github.com/gillopy/nisar-canopy" data-repo hidden>Ver el repositorio</a>
+        <a class="btn btn--ghost" href="#caso-chaco">Ver el caso medido</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="caso-chaco" class="section">
+    <div class="wrap">
+      <p class="index">03</p>
+      <h2>Caso 1 · El desmonte del Chaco</h2>
+      <p class="prose">
+        La caja de trabajo cubre <strong>3.602 ha</strong>, con un 75 % de cobertura forestal.
+        A 9,8 km al suroeste se delimitó una caja de control de <strong>5.283 ha</strong> con
+        94 % de bosque y sin intervención conocida en el período. A las dos se les aplicó
+        exactamente lo mismo: mismas escenas, mismo umbral, misma unidad mínima de mapeo.
+      </p>
+      <p class="prose">
+        Entre el 20 de enero y el 21 de marzo de 2026 el radar encontró
+        <strong>262,9 ha</strong> de caída de HV por debajo de −3 dB: el 7,3 % de la caja y el
+        9,7 % del bosque. Los bloques son rectangulares y están alineados: el patrón del
+        desmonte mecanizado, no el de un incendio ni el de una inundación.
+      </p>
+
+      <div class="split">
+        <figure class="panel">
+          <div id="mapa" class="map"></div>
+          <figcaption>
+            Polígono del desmonte en rojo y polígono de control en gris. Proyección local
+            equirectangular; la grilla se traza cada 5 km.
+          </figcaption>
+        </figure>
+        <figure class="slider-fig slider-fig--half">
+          <div class="slider" id="s2Slider">
+            <img class="slider__img" src="img/s2_antes.webp" alt="Sentinel-2 color real del 22 de enero de 2026, Chaco">
+            <img class="slider__img slider__after" id="s2SliderAfter" src="img/s2_despues.webp" alt="Sentinel-2 color real del 27 de marzo de 2026, Chaco">
+            <div class="slider__divider" id="s2SliderDivider"></div>
+            <span class="slider__tag slider__tag--l">22 ene 2026</span>
+            <span class="slider__tag slider__tag--r">27 mar 2026</span>
+          </div>
+          <input class="slider__range" id="s2SliderRange" type="range" min="0" max="100" value="50" step="0.5"
+                 aria-label="Comparar Sentinel-2 del 22 de enero con el 27 de marzo en el Chaco">
+          <figcaption>
+            La misma caja en Sentinel-2 L2A, 10 m: mediana de doce escenas por fecha y nubes
+            enmascaradas. El radar dice dónde; el óptico confirma qué se ve.
+          </figcaption>
+        </figure>
+      </div>
+
+      <figure class="panel panel--wide">
+        <img src="img/s2_indices.webp" alt="Color, cambio de NDVI, cambio de NDBI, cambio de NDWI y NDVI final del Chaco">
+        <figcaption>
+          Arriba: color de enero, color de marzo y cambio de NDVI. Abajo: cambio de NDBI,
+          cambio de NDWI y NDVI de marzo. Dentro de la banda el NDVI cae y el NDBI sube: menos
+          infrarrojo cercano y más SWIR, la firma de suelo descubierto.
+        </figcaption>
+      </figure>
+
+      <div class="split">
+        <figure class="panel">
+          <div class="panel__media panel__media--radar">
+            <img src="img/mascara_total.webp" alt="Máscara de pérdida de HV entre el 20 de enero y el 21 de marzo de 2026">
+          </div>
+          <figcaption>
+            <span class="fig-num fig-num--loss" id="numDesmonte">262,9 ha</span><br>
+            Desmonte. 7,3 % del área y 9,7 % del bosque. Los bloques rectangulares y alineados
+            son el patrón del desmonte mecanizado.
+          </figcaption>
+        </figure>
+        <figure class="panel">
+          <div class="panel__media panel__media--control">
+            <img src="img/mascara_control.webp" alt="Máscara del polígono de control">
+          </div>
+          <figcaption>
+            <span class="fig-num fig-num--ok" id="numControl">2,1 ha</span><br>
+            Control. Mismo par de fechas, mismo umbral: sin bloques de cambio apreciables.
+          </figcaption>
+        </figure>
+      </div>
+
+      <div class="verdict" id="verdict"></div>
+
+      <h3 class="sub">Cuándo ocurrió</h3>
+      <p class="prose">
+        NISAR repite la misma geometría cada 12 días. Al dividir la ventana en pares
+        consecutivos, el total acumulado se convierte en una secuencia y el cambio queda
+        acotado entre dos fechas: la pérdida empieza entre el 20 de enero y el 1 de febrero de
+        2026, y termina antes del 9 de marzo.
+      </p>
+      <div class="chart" id="chart"></div>
+      <div class="legend">
+        <span><i class="dot dot--loss"></i> pérdida en el desmonte</span>
+        <span><i class="dot dot--ctrl"></i> pérdida en el bosque de control</span>
+      </div>
+      <p class="callout">
+        El par del 13 al 25 de febrero registra 102 ha de ganancia en el desmonte. El control
+        registra 26,6 ha en la misma ventana: el aumento es de la escena completa y no del
+        área desmontada.
+      </p>
+
+      <details class="deep">
+        <summary>Ver la tabla de pares, con el control</summary>
+        <div class="deep__body">
+          <div class="table-wrap">
+            <table id="tablaPasos">
+              <caption>Hectáreas por par de 12 días, con el control pareado.</caption>
+            </table>
+          </div>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <section id="caso-este" class="section">
+    <div class="wrap">
+      <p class="index">04</p>
+      <h2>Caso 2 · El Este, a 10 metros y en otra estación</h2>
+      <p class="prose">
+        El mismo procedimiento, sin un cambio, sobre otra escena: <strong>76.668 ha</strong>,
+        82 % de bosque, 10 m por píxel y 48 días entre fechas, en invierno. El objetivo era
+        comprobar si el método dependía del lugar, de la resolución o de la época del año.
+      </p>
+
+      <div class="split split--caso">
+        <figure class="slider-fig slider-fig--este">
+          <div class="slider slider--este" id="esteSlider">
+            <img class="slider__img" src="img/este_antes.webp" alt="Retrodispersión HV del 10 de julio de 2026, Este de Paraguay">
+            <img class="slider__img slider__after" id="esteSliderAfter" src="img/este_despues.webp" alt="Retrodispersión HV del 27 de agosto de 2026, Este de Paraguay">
+            <div class="slider__divider" id="esteSliderDivider"></div>
+            <span class="slider__tag slider__tag--l">10 jul 2026</span>
+            <span class="slider__tag slider__tag--r">27 ago 2026</span>
+          </div>
+          <input class="slider__range" id="esteSliderRange" type="range" min="0" max="100" value="50" step="0.5"
+                 aria-label="Comparar la escena del 10 de julio con la del 27 de agosto en el Este">
+          <figcaption>
+            Este. Misma escala de grises en ambas fechas (−17 a −9 dB). El desmonte se
+            concentra en el extremo sudoeste de la caja. A esta escala la diferencia entre
+            fechas es poco visible; el área está cuantificada en la tabla.
+          </figcaption>
+        </figure>
+        <div class="tech-card">
+          <h3>Chaco contra Este</h3>
+          <div class="table-wrap">
+            <table id="tablaCasos"></table>
+          </div>
+          <p class="tech-note" id="lecturaEste"></p>
+        </div>
+      </div>
+
+      <p class="callout">
+        El conteo crudo da 1.069,8 ha, pero son fragmentos de pocos píxeles. Al exigir bloques
+        de media hectárea quedan <strong>291,5 ha en 89 componentes</strong>, con una mancha
+        mayor de 34,3 ha. El control, con 1.892 ha de bosque, no produce ni un bloque.
+      </p>
+
+      <details class="deep">
+        <summary>Ver el barrido de umbral en el Este</summary>
+        <div class="deep__body">
+          <p class="tech-note">
+            La relación entre desmonte y control se mantiene en todos los umbrales, y crece a
+            medida que el umbral sube: los bloques con pérdida intensa son los que persisten.
+          </p>
+          <div class="table-wrap">
+            <table id="tablaUmbralEste"></table>
+          </div>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <section id="validacion" class="section">
+    <div class="wrap">
+      <p class="index">05</p>
+      <h2>Cómo sabemos que no es ruido</h2>
+      <p class="prose">
+        Cuatro pruebas independientes: un control al lado, el barrido del umbral, la
+        comparación entre ventanas cortas y largas, y una segunda fuente de datos. Ninguna
+        alcanza sola; juntas sostienen la conclusión.
+      </p>
+
+      <details class="deep deep--first">
+        <summary>El método, paso por paso</summary>
+        <div class="deep__body">
+          <p class="prose prose--tight">
+            No hay un clasificador entrenado: el resultado sale de una cadena de umbrales
+            explícitos, todos reproducibles con los comandos del repositorio.
+          </p>
+          <ol class="steps" id="pasosMetodo"></ol>
+          <div class="formula" id="formula"></div>
+        </div>
+      </details>
+
+      <h3 class="sub">Lo probamos en tres zonas y varias ventanas</h3>
+      <div class="table-wrap">
+        <table>
+          <caption>Todo lo medido para esta página, con su época del año y su resolución.</caption>
+          <thead>
+            <tr><th>Zona</th><th>Ventana</th><th>Época</th><th>Resolución</th><th>Fuente</th><th>Superficie</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Chaco</td><td>20 ene → 21 mar 2026</td><td>temporada de lluvias</td><td>20 m</td><td>NISAR</td><td>3.602 ha</td></tr>
+            <tr><td>Chaco, control</td><td>20 ene → 21 mar 2026</td><td>temporada de lluvias</td><td>20 m</td><td>NISAR</td><td>5.283 ha</td></tr>
+            <tr><td>Este</td><td>10 jul → 27 ago 2026</td><td>invierno</td><td>10 m</td><td>NISAR</td><td>76.668 ha</td></tr>
+            <tr><td>Mbaracayú</td><td>28 jun → 27 ago 2026</td><td>invierno</td><td>10 m</td><td>NISAR</td><td>9.762 ha</td></tr>
+            <tr><td>Mbaracayú</td><td>03 jul → 31 oct 2025</td><td>invierno → primavera</td><td>10 m</td><td>Sentinel-2</td><td>9.719 ha</td></tr>
+            <tr><td>Caja grande</td><td>21 nov → 03 dic 2025</td><td>primavera</td><td>20 m</td><td>NISAR</td><td>156.512 ha</td></tr>
+            <tr><td>Caja grande</td><td>08 ene → 11 oct 2026</td><td>nueve meses</td><td>20 m</td><td>NISAR</td><td>156.512 ha</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="sub">Pares de doce días, no comparaciones de meses</h3>
+      <p class="prose">
+        La misma caja grande, el mismo detector y tres ventanas distintas. A 12 días el
+        resultado es pequeño y simétrico. A 276 días lo domina la diferencia de humedad entre
+        estaciones: 15,8 % de la caja aparece como ganancia, y al invertir el orden de las
+        fechas el número no es antisimétrico. Ahí la cifra deja de describir un cambio en el
+        terreno.
+      </p>
+      <div class="cards" id="cards"></div>
+      <p class="prose prose--tight">
+        La consecuencia práctica es que el detector de cambio de NISAR es utilizable en pares
+        adyacentes y no en comparaciones de varios meses. Sin declarar esa condición,
+        cualquier cifra de deforestación tomada de un par lejano es indefendible.
+      </p>
+
+      <h3 class="sub">El umbral no está elegido a dedo</h3>
+      <p class="prose">
+        El umbral de −3 dB es una elección. Para medir cuánto pesa, el cálculo se repitió con
+        seis valores, se aplicó una unidad mínima de mapeo de media hectárea y se corrigió con
+        la tasa de falsos positivos que marca el control.
+      </p>
+      <div class="tech-grid">
+        <article class="tech-card tech-card--wide">
+          <h3>Barrido de umbral</h3>
+          <p class="tech-note">
+            La misma escena y el mismo par de fechas, variando solo el umbral de caída de HV.
+            El punto negro marca el valor utilizado en el resto del análisis. El desmonte
+            decrece de forma continua; el control se derrumba.
+          </p>
+          <div class="table-wrap">
+            <table id="tablaUmbral"></table>
+          </div>
+        </article>
+        <article class="tech-card">
+          <h3>Unidad mínima de mapeo</h3>
+          <p class="tech-note">
+            Componentes conexas de 8 vecinos. Se descarta toda mancha menor a 0,5 ha, que a
+            20 m equivale a 12,5 píxeles.
+          </p>
+          <div id="mmuStats" class="mini-stats"></div>
+        </article>
+        <article class="tech-card">
+          <h3>Corrección por control</h3>
+          <p class="tech-note">
+            La tasa de pérdida del bosque intacto estima cuántos falsos positivos cabría
+            esperar en la caja del desmonte.
+          </p>
+          <div id="corrStats" class="mini-stats"></div>
+        </article>
+      </div>
+
+      <h3 class="sub">HV contra HH: separar estructura de humedad</h3>
+      <p class="prose">
+        Un aumento de humedad afecta a las dos polarizaciones de forma parecida; la pérdida
+        de dosel afecta sobre todo a HV, que es la banda de dispersión de volumen. Esa
+        diferencia es la que permite decir algo sobre el mecanismo y no solo sobre el brillo.
+      </p>
+      <div class="table-wrap">
+        <table id="tablaFirma"></table>
+      </div>
+      <p class="callout" id="lecturaFirma"></p>
+
+      <h3 class="sub">La distribución del desmonte no es la del control</h3>
+      <p class="prose">
+        Cada píxel de bosque aporta un valor de ΔHV. Si el cambio detectado fuera ruido, la
+        distribución del desmonte sería igual a la del control. No lo es: el desmonte tiene una
+        cola hacia valores negativos que el control no presenta.
+      </p>
+      <figure class="panel">
+        <div id="histograma" class="hist"></div>
+        <figcaption>
+          Densidad de píxeles de bosque por intervalo de 0,5 dB. La línea punteada marca el
+          umbral de −3 dB.
+        </figcaption>
+      </figure>
+
+      <h3 class="sub">La escala cambia el número</h3>
+      <p class="prose">
+        A 10 m hay cuatro veces más píxeles por hectárea que a 20 m. El mismo cambio se reparte
+        en más unidades y el conteo directo de píxeles sobre el umbral crece con la resolución.
+        Ese conteo no es una propiedad del terreno: es una consecuencia del muestreo. Por eso
+        el área que se informa es la de componentes coherentes, y aun así se declara como
+        rango.
+      </p>
+      <div class="split">
+        <figure class="panel">
+          <div class="table-wrap">
+            <table id="tablaDistribucion">
+              <caption>Bloques que superan la unidad mínima de 0,5 ha, por tamaño.</caption>
+            </table>
+          </div>
+        </figure>
+        <figure class="panel">
+          <div id="histogramaEste" class="hist"></div>
+          <figcaption>
+            Distribución de ΔHV en el Este sobre píxeles de bosque. Las dos curvas están
+            próximas en el centro; la separación aparece en la cola izquierda.
+          </figcaption>
+        </figure>
+      </div>
+      <p class="callout" id="escalaNota"></p>
+
+      <h3 class="sub">La prueba que más pesa: una reserva protegida</h3>
+      <p class="prose">
+        Si el detector marca desmonte en la región, dentro de un área protegida debería marcar
+        poco. Se repiten las mismas escenas de junio y agosto de 2026 —mismo track, mismo
+        procesamiento— y se achica la caja a la Reserva Mbaracayú: 9.762 ha con un 89 % de
+        bosque. No hay descarga nueva, solo otro recorte.
+      </p>
+      <div class="split split--caso">
+        <figure class="slider-fig">
+          <div class="slider slider--reserva" id="resNisarSlider">
+            <img class="slider__img" src="img/reserva_nisar_antes.webp" alt="Retrodispersión HV del 28 de junio de 2026 en la reserva Mbaracayú">
+            <img class="slider__img slider__after" id="resNisarSliderAfter" src="img/reserva_nisar_despues.webp" alt="Retrodispersión HV del 27 de agosto de 2026 en la reserva Mbaracayú">
+            <div class="slider__divider" id="resNisarSliderDivider"></div>
+            <span class="slider__tag slider__tag--l">28 jun 2026</span>
+            <span class="slider__tag slider__tag--r">27 ago 2026</span>
+          </div>
+          <input class="slider__range" id="resNisarSliderRange" type="range" min="0" max="100" value="50" step="0.5"
+                 aria-label="Comparar la escena del 28 de junio con la del 27 de agosto en la reserva">
+          <figcaption>
+            Reserva. Misma escala de grises en ambas fechas. El bosque se ve parejo: no hay
+            frentes de desmonte como los del Chaco.
+          </figcaption>
+        </figure>
+        <div class="tech-card">
+          <h3>Reserva contra la región</h3>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th></th><th>Reserva</th><th>Región</th></tr>
+              </thead>
+              <tbody>
+                <tr><th>Área de la caja</th><td>9.762 ha</td><td>76.668 ha</td></tr>
+                <tr><th>Bosque</th><td>8.646 ha (89 %)</td><td>62.752 ha (82 %)</td></tr>
+                <tr><th>Pérdida a 3 dB</th><td>218,9 ha</td><td>1.069,8 ha</td></tr>
+                <tr><th>Componentes conexas</th><td>6.573</td><td>28.461</td></tr>
+                <tr><th>Superan 0,5 ha</th><td>4,4 ha en 7 bloques</td><td>291,5 ha en 89 bloques</td></tr>
+                <tr><th>Bloque mayor</th><td>0,9 ha</td><td>34,3 ha</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="tech-note">
+            Misma escena, misma ventana de 60 días. La diferencia no es el método: es el
+            terreno.
+          </p>
+        </div>
+      </div>
+      <p class="callout">
+        El detector crudo marca 218,9 ha, pero son píxeles sueltos: el fragmento mediano mide
+        0,02 ha, ruido de la imagen de radar. Al exigir bloques de media hectárea quedan
+        <strong>4,4 ha en siete manchas</strong>, la mayor de 0,9 ha. El control —459 ha dentro
+        de la misma caja— produce cero bloques. En esta ventana la reserva no muestra desmonte
+        a escala de parcela, mientras la región que la rodea sí.
+      </p>
+
+      <details class="deep">
+        <summary>Ver la reserva con Sentinel-2, antes de que existieran escenas NISAR</summary>
+        <div class="deep__body">
+          <p class="prose prose--tight">
+            NISAR no tiene imágenes de la reserva antes del 19 de junio de 2026. Ese período se
+            cubrió con Sentinel-2, restringido al polígono del área protegida: 8.840 ha de
+            bosque dentro de una caja de 9.719 ha. La pérdida entre julio y octubre de 2025 son
+            catorce parcelas pequeñas.
+          </p>
+          <figure class="slider-fig">
+            <div class="slider slider--ancho" id="resSlider">
+              <img class="slider__img" src="img/reserva_opt_antes.webp" alt="Sentinel-2 color real del 3 de julio de 2025, reserva Mbaracayú">
+              <img class="slider__img slider__after" id="resSliderAfter" src="img/reserva_opt_despues.webp" alt="Sentinel-2 color real del 31 de octubre de 2025, reserva Mbaracayú">
+              <div class="slider__divider" id="resSliderDivider"></div>
+              <span class="slider__tag slider__tag--l">03 jul 2025</span>
+              <span class="slider__tag slider__tag--r">31 oct 2025</span>
+            </div>
+            <input class="slider__range" id="resSliderRange" type="range" min="0" max="100" value="50" step="0.5"
+                   aria-label="Comparar Sentinel-2 del 3 de julio con el 31 de octubre en la reserva">
+            <figcaption>
+              Sentinel-2 L2A, color real, mediana de la ventana, nubes enmascaradas. Mismo
+              rango de contraste en las dos fechas.
+            </figcaption>
+          </figure>
+          <div class="table-wrap">
+            <table id="tablaReserva"></table>
+          </div>
+        </div>
+      </details>
+
+      <figure class="panel">
+        <img src="img/reserva_nisar_mascara.webp" alt="Pérdida de HV dentro de la reserva con unidad mínima de mapeo de media hectárea">
+        <figcaption>
+          Pérdida de HV con unidad mínima de mapeo de 0,5 ha. De 6.573 fragmentos sobreviven
+          siete, todos menores a una hectárea.
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section id="limites" class="section">
+    <div class="wrap">
+      <p class="index">06</p>
+      <h2>Lo que esta página no prueba</h2>
+      <p class="prose">
+        Un resultado honesto declara su alcance. Estas son las limitaciones del método y del
+        producto, incluidas las que reducen lo que se puede afirmar.
+      </p>
+      <p class="callout">
+        La primera es la que un especialista en radar va a buscar: <strong>la retrodispersión
+        no es solo cobertura</strong>. La humedad del suelo, la lluvia y el ángulo de
+        incidencia mueven el brillo de la escena sin que el terreno cambie. Acá se controla de
+        tres maneras —ventanas de 12 días, un bosque de control medido con las mismas imágenes
+        y la diferencia entre HV y HH— y ninguna de las tres convierte al detector en un
+        inventario forestal.
+      </p>
+      <ul class="limits" id="limits"></ul>
+    </div>
+  </section>
+
+  <section id="impacto" class="section">
+    <div class="wrap">
+      <p class="index">07</p>
+      <h2>Para qué sirve, y hasta dónde puede llegar</h2>
+      <p class="prose">
+        El monitoreo de bosque se apoya en imágenes ópticas, y en el Chaco eso significa
+        depender del cielo. Un detector de radar con comprobante reproducible no reemplaza ese
+        monitoreo: lo cubre donde el óptico se queda sin datos, y lo hace con una cifra que se
+        puede auditar.
+      </p>
+      <p class="prose">
+        Usuarios posibles, ninguno comprometido: el Instituto Forestal Nacional (INFONA), el
+        Ministerio del Ambiente y Desarrollo Sostenible (MADES), gobernaciones y
+        municipalidades, organizaciones ambientales, universidades y grupos de investigación,
+        y cooperativas o productores que necesiten verificar una denuncia con evidencia
+        propia.
+      </p>
+
+      <div class="grid-3">
+        <article class="block">
+          <span class="phase">Hoy</span>
+          <h3>Lo que ya funciona</h3>
+          <ul class="block__list">
+            <li>Consola completa con tres familias de producto: GCOV, SME2 y GUNW.</li>
+            <li>Dos desmontes medidos, con control pareado y verificación Sentinel-2.</li>
+            <li>45 tests sin red, imagen Docker publicada y plan de comandos por corrida.</li>
+          </ul>
+        </article>
+        <article class="block">
+          <span class="phase">Próximo</span>
+          <h3>Lo que falta para confiar más</h3>
+          <ul class="block__list">
+            <li>Validación in situ y matriz de confusión con fechas ópticas pareadas.</li>
+            <li>Corrección por ángulo de incidencia y filtro speckle multitemporal.</li>
+            <li>Umbral calibrado por región y flujo automatizado con API y alertas.</li>
+          </ul>
+        </article>
+        <article class="block">
+          <span class="phase">Después</span>
+          <h3>Hacia dónde escala</h3>
+          <ul class="block__list">
+            <li>Operación continua sobre áreas prioritarias, con series comparables.</li>
+            <li>Integración con sistemas nacionales de monitoreo y reporte.</li>
+            <li>Versión en inglés y publicación de las máscaras para verificación externa.</li>
+          </ul>
+        </article>
+      </div>
+
+      <h3 class="sub">La misma señal sirve para más de una pregunta</h3>
+      <p class="prose">
+        Dos de las extensiones no son una promesa: el producto de agua y el de incendio ya
+        existen en la consola. Lo que falta es el flujo operativo alrededor.
+      </p>
+      <div class="grid-3">
+        <article class="block">
+          <h3>Inundaciones</h3>
+          <p>
+            El producto de agua de GCOV ya separa superficie inundada, y GUNW aporta coherencia
+            y fase del par de doce días. Un mapa de anegamiento por evento es la extensión más
+            directa del mismo pipeline.
+          </p>
+        </article>
+        <article class="block">
+          <h3>Incendios</h3>
+          <p>
+            El producto de incendio cruza la escena con los focos de calor de FIRMS. El radar
+            aporta lo que el óptico no puede: la cicatriz debajo del humo.
+          </p>
+        </article>
+        <article class="block">
+          <h3>Uso del suelo y humedad</h3>
+          <p>
+            SME2 ya entrega humedad del suelo a 200 m y la consola ya arma series temporales.
+            Con esas dos piezas se puede seguir pasturas, rotación de cultivos y estrés hídrico.
+          </p>
+        </article>
+      </div>
+
+      <p class="callout">
+        Esto es una primera versión. Mide dos casos, con un método explícito y sus límites
+        escritos. Lo que sigue no es una promesa de producto: es la lista de lo que falta para
+        que el mismo flujo sirva de forma operativa, y con datos de campo puede volverse una
+        herramienta bastante más completa.
+      </p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer" id="ficha">
+  <div class="wrap">
+    <h3>Ficha técnica</h3>
+    <dl class="specs" id="specs"></dl>
+
+    <h3>El proyecto</h3>
+    <p class="prose prose--tight">
+      <strong>NISAR Canopy</strong> es una consola abierta para la misión NISAR: búsqueda de
+      escenas en el archivo de ASF, descarga de productos HDF5 y análisis de cambio con
+      radar. Backend FastAPI, frontend React + Leaflet, pipeline en Python, empaquetado en
+      Docker, licencia MIT, versión 0.1.0. Este caso de estudio se generó con esa app y el
+      repositorio incluye el código y los comandos para regenerar cada cifra de esta página.
+    </p>
+    <div class="guia__links">
+      <a class="btn" href="https://github.com/gillopy/nisar-canopy" data-repo hidden>Ver el repositorio</a>
+      <a class="btn btn--ghost" href="https://github.com/gillopy/nisar-canopy/releases" data-repo hidden>Versiones</a>
+    </div>
+
+    <h3>Datos y créditos</h3>
+    <p class="prose prose--tight">
+      NISAR L2 GCOV, L3 SME2 y L1 GUNW (colecciones PROVISIONAL): NASA / ISRO, archivados por
+      ASF DAAC. Sentinel-2 L2A: ESA Copernicus, vía Microsoft Planetary Computer. FIRMS: NASA
+      EOSDIS. Mapa base: OpenStreetMap. NISAR es una misión conjunta de NASA y la Indian Space
+      Research Organisation. Proyecto de participantes del NASA Space Apps Challenge 2026: no
+      es un producto de NASA.
+    </p>
+
+    <h3>Reproducible</h3>
+    <p class="prose prose--tight">
+      Cada cifra de esta página proviene de un recorte de la escena NISAR y de un par de
+      fechas ordenado explícitamente. Los datos de los dos casos están en <code>data.js</code>,
+      <code>tecnico.js</code> y <code>este.js</code>; las imágenes, en <code>img/</code>.
+    </p>
+
+    <h3>Uso de asistencia con IA</h3>
+    <p class="prose prose--tight">
+      Se usaron modelos de lenguaje para escribir y revisar parte del código, ordenar la
+      documentación y construir esta página. No se usaron para generar imágenes ni audio, y no
+      se usó ningún elemento de marca de NASA. La elección de las áreas de estudio, la
+      interpretación de los resultados y la validación son del autor. Cada cifra sale de un
+      recorte de la escena y de un par de fechas declarados en el código.
+    </p>
+
+    <h3>Cómo citar</h3>
+    <p class="prose prose--tight">
+      Cabrera, G. (2026). <em>NISAR Canopy</em> (v0.1.0) [Software].
+      <a href="https://github.com/gillopy/nisar-canopy">github.com/gillopy/nisar-canopy</a>.
+      Si el trabajo usa el caso de estudio del Chaco, citá también los datos de origen: NISAR
+      L2 GCOV, NASA/ISRO, archivados por ASF DAAC.
+    </p>
+
+    <p class="fine">
+      Producto NISAR L2 GCOV provisional. Datos abiertos de NASA y ASF DAAC.
+      Space Apps 2026 · Dancing with the SARs.
+    </p>
+  </div>
+</footer>
+
+<script src="data.js"></script>
+<script src="tecnico.js"></script>
+<script src="este.js"></script>
+<script src="app.js"></script>
+<script src="nav.js"></script>
+</body>
+</html>
