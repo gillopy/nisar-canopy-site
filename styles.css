@@ -1302,3 +1302,36 @@ h3.sub + .prose { margin-bottom: 24px; }
 @media (max-width: 900px) {
   .scrolly-step p { max-width: 62ch; }
 }
+
+/* ---------- piezas de pitch ---------- */
+
+.pitch {
+  margin: 6px 0 34px;
+  padding: 18px 22px;
+  font-size: clamp(14px, 1.6vw, 15.5px);
+  line-height: 1.6;
+  color: var(--muted);
+  background: var(--panel);
+  border-left: 3px solid var(--iris);
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+
+.pitch strong { color: var(--text); font-weight: 620; }
+
+.closing {
+  margin: 40px 0 0;
+  max-width: 44ch;
+  font-size: clamp(1.15rem, 2.6vw, 1.6rem);
+  line-height: 1.35;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+
+.closing::before {
+  content: "";
+  display: block;
+  width: 46px;
+  height: 2px;
+  margin-bottom: 20px;
+  background: var(--iris);
+}
