@@ -8,3 +8,6 @@ optico-2025/
 # Ruido del sistema
 Thumbs.db
 desktop.ini
+
+# Sesiones de trabajo: no se publican
+session-*.md
