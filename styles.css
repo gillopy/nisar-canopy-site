@@ -1253,3 +1253,52 @@ h3.sub + .prose { margin-bottom: 24px; }
 @media (max-width: 860px) {
   .gallery { columns: 1; }
 }
+
+/* ---------- responsive: correcciones moviles ---------- */
+
+/* La regla de columnas del scrolly quedo despues de su media query y la pisaba. */
+@media (max-width: 900px) {
+  .scrolly { grid-template-columns: minmax(0, 1fr); }
+}
+
+@media (max-width: 700px) {
+  .nav__inner { gap: 8px; padding: 0 12px; }
+  .nav__links a { padding: 6px 9px; font-size: 12.5px; }
+  .nav__repo { padding: 5px 10px; font-size: 12.5px; }
+  .nav__links { mask-image: linear-gradient(to right, #000 86%, rgba(0, 0, 0, 0)); }
+
+  .table-wrap table { font-size: 12.5px; }
+  .table-wrap th, .table-wrap td { padding: 8px 8px; white-space: normal; }
+  .table-wrap caption { font-size: 12px; }
+
+  .scrolly-step h3 { font-size: 1.1rem; }
+  .scrolly-step p { font-size: 14px; }
+
+  .panel > figcaption, .deep__body figcaption { font-size: 12px; }
+
+  h3.sub { margin-top: 34px; }
+  .section { padding: 48px 0; }
+}
+
+/* Aviso visual de que la tabla se puede desplazar */
+.table-wrap {
+  background:
+    linear-gradient(to right, var(--bg) 20%, rgba(8, 8, 10, 0)) left center,
+    linear-gradient(to left, var(--bg) 20%, rgba(8, 8, 10, 0)) right center,
+    radial-gradient(farthest-side at 0 50%, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0)) left center,
+    radial-gradient(farthest-side at 100% 50%, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0)) right center;
+  background-repeat: no-repeat;
+  background-size: 22px 100%, 22px 100%, 12px 100%, 12px 100%;
+  background-attachment: local, local, scroll, scroll;
+}
+
+@media (max-width: 480px) {
+  .nav__links a { padding: 6px 7px; font-size: 12px; }
+  .nav__repo { padding: 5px 9px; font-size: 12px; }
+  .table-wrap table { font-size: 11.5px; }
+  .table-wrap th, .table-wrap td { padding: 7px 6px; }
+}
+
+@media (max-width: 900px) {
+  .scrolly-step p { max-width: 62ch; }
+}
