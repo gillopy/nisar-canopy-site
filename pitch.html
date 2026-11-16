@@ -73,7 +73,9 @@ img { display: block; max-width: 100%; }
   object-position: center;
 }
 
-.deck__media .panel--contain.is-active {
+.deck__media .panel--sat img { object-position: 62% 32%; }
+
+.panel--contain.is-active {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -289,6 +291,123 @@ img { display: block; max-width: 100%; }
 
 .hint.is-hidden { opacity: 0; }
 
+/* ---------- comparador de barrido ---------- */
+
+.deck__media .panel--swipe.is-active {
+  display: flex;
+  flex-direction: column;
+}
+
+.swipe {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  background: #050507;
+  cursor: ew-resize;
+  touch-action: pan-y;
+}
+
+.swipe__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.swipe__after { clip-path: inset(0 0 0 50%); }
+
+.swipe__divider {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 2px;
+  margin-left: -1px;
+  background: #fff;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+}
+
+.swipe__tag {
+  position: absolute;
+  top: 14px;
+  padding: 5px 10px;
+  font-size: 10.5px;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.62);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  pointer-events: none;
+}
+
+.swipe__tag--l { left: 14px; }
+.swipe__tag--r { right: 14px; }
+
+.swipe__range {
+  width: 100%;
+  margin: 0;
+  accent-color: var(--iris);
+  cursor: ew-resize;
+}
+
+.deck__media .panel--swipe figcaption {
+  position: static;
+  padding: 12px 20px 14px;
+  text-align: center;
+  background: none;
+}
+
+/* ---------- bloque de control en la parada 4 ---------- */
+
+.control {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 18px;
+  margin: 32px 0 0;
+  max-width: 560px;
+  align-items: start;
+}
+
+.control figure { margin: 0; min-width: 0; }
+
+.control__mapa img {
+  width: 100%;
+  height: auto;
+  border: 1px solid #232329;
+  border-radius: 8px;
+  background: #0c0c10;
+}
+
+.control figcaption {
+  margin-top: 8px;
+  font-size: 11.5px;
+  line-height: 1.45;
+  color: var(--dim);
+}
+
+.swipe--mini {
+  aspect-ratio: 740 / 510;
+  border: 1px solid #232329;
+  border-radius: 8px;
+}
+
+.swipe--mini .swipe__tag {
+  top: 8px;
+  padding: 3px 7px;
+  font-size: 9px;
+}
+
+.swipe--mini .swipe__tag--l { left: 8px; }
+.swipe--mini .swipe__tag--r { right: 8px; }
+
+.swipe--mini + .swipe__range { margin-top: 8px; }
+
 /* ---------- móvil ---------- */
 
 @media (max-width: 880px) {
@@ -341,9 +460,9 @@ img { display: block; max-width: 100%; }
 <main class="deck" id="deck">
 
   <div class="deck__media">
-    <figure class="panel is-active" data-panel="1">
-      <img src="img/pitch-antes-radar.webp" alt="Retrodispersión HV del Chaco el 20 de enero de 2026">
-      <figcaption>Banda HV, 20 de enero de 2026. El radar ve la estructura del bosque, no su color.</figcaption>
+    <figure class="panel panel--sat is-active" data-panel="1">
+      <img src="img/pitch-satelite.webp" alt="Ilustración de un satélite de radar sobre Sudamérica, con un haz sobre un área desmontada">
+      <figcaption>Ilustración: el radar mira a través de la nube. No es una imagen de NISAR.</figcaption>
     </figure>
     <figure class="panel panel--contain" data-panel="2">
       <img src="img/consola.webp" alt="La consola NISAR Canopy con una caja dibujada sobre el Chaco">
@@ -353,9 +472,17 @@ img { display: block; max-width: 100%; }
       <img src="img/consola-panel.webp" alt="Panel de análisis con producto, fechas, modo y umbrales">
       <figcaption>Producto, par de fechas, modo y umbrales: el plan de la corrida.</figcaption>
     </figure>
-    <figure class="panel" data-panel="4">
-      <img src="img/pitch-mascara.webp" alt="Máscara de pérdida de HV del Chaco entre enero y marzo de 2026">
-      <figcaption>Pérdida de HV entre el 20 de enero y el 21 de marzo de 2026.</figcaption>
+    <figure class="panel panel--swipe" data-panel="4">
+      <div class="swipe" data-swipe>
+        <img class="swipe__img" src="img/pitch-antes-radar.webp" alt="Retrodispersión HV del 20 de enero de 2026">
+        <img class="swipe__img swipe__after" src="img/pitch-despues-radar.webp" alt="Retrodispersión HV del 21 de marzo de 2026">
+        <span class="swipe__tag swipe__tag--l">20 ene</span>
+        <span class="swipe__tag swipe__tag--r">21 mar</span>
+        <div class="swipe__divider"></div>
+      </div>
+      <input class="swipe__range" type="range" min="0" max="100" value="50" step="0.5"
+             aria-label="Arrastrar para comparar enero y marzo sobre el mismo encuadre">
+      <figcaption>Arrastrá la línea: el mismo encuadre antes y después.</figcaption>
     </figure>
     <figure class="panel panel--contain" data-panel="5">
       <img src="img/panel-registros.webp" alt="Columnas de estadísticas y registro de cada paso de la corrida">
@@ -417,7 +544,24 @@ img { display: block; max-width: 100%; }
         Mismo par de imágenes, mismo umbral. El desmonte pierde 262,9 ha; el bosque intacto a
         9,8 km pierde 2,1.
       </p>
-      <p class="big">125 : 1<small>relación entre el desmonte y su control</small></p>
+      <div class="control">
+        <figure class="control__mapa">
+          <img src="img/mapa-chaco.svg" alt="Esquema con el polígono del desmonte en rojo y el de control en gris, a 9,8 km">
+          <figcaption>El desmonte y la zona de control, a 9,8 km.</figcaption>
+        </figure>
+        <figure>
+          <div class="swipe swipe--mini" data-swipe>
+            <img class="swipe__img" src="img/s2_antes.webp" alt="Sentinel-2 del 22 de enero de 2026">
+            <img class="swipe__img swipe__after" src="img/s2_despues.webp" alt="Sentinel-2 del 27 de marzo de 2026">
+            <span class="swipe__tag swipe__tag--l">22 ene</span>
+            <span class="swipe__tag swipe__tag--r">27 mar</span>
+            <div class="swipe__divider"></div>
+          </div>
+          <input class="swipe__range" type="range" min="0" max="100" value="50" step="0.5"
+                 aria-label="Comparar Sentinel-2 de enero y de marzo">
+          <figcaption>La misma caja en Sentinel-2, antes y después.</figcaption>
+        </figure>
+      </div>
     </section>
 
     <section class="slide" data-slide="5">
@@ -536,7 +680,50 @@ img { display: block; max-width: 100%; }
     if (destino) destino.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
+  (function montarSwipes() {
+    var zonas = document.querySelectorAll("[data-swipe]");
+
+    Array.prototype.forEach.call(zonas, function (caja) {
+      var despues = caja.querySelector(".swipe__after");
+      var linea = caja.querySelector(".swipe__divider");
+      var rango = caja.parentElement.querySelector(".swipe__range");
+      if (!despues || !linea) return;
+
+      function pintar(p) {
+        p = Math.max(0, Math.min(100, p));
+        despues.style.clipPath = "inset(0 0 0 " + p + "%)";
+        linea.style.left = p + "%";
+        if (rango && rango.value !== String(p)) rango.value = String(p);
+      }
+
+      function desdeEvento(ev) {
+        var r = caja.getBoundingClientRect();
+        return ((ev.clientX - r.left) / r.width) * 100;
+      }
+
+      var arrastrando = false;
+
+      caja.addEventListener("pointerdown", function (ev) {
+        arrastrando = true;
+        caja.setPointerCapture(ev.pointerId);
+        pintar(desdeEvento(ev));
+      });
+      caja.addEventListener("pointermove", function (ev) {
+        if (arrastrando) pintar(desdeEvento(ev));
+      });
+      caja.addEventListener("pointerup", function (ev) {
+        arrastrando = false;
+        if (caja.hasPointerCapture(ev.pointerId)) caja.releasePointerCapture(ev.pointerId);
+      });
+      caja.addEventListener("pointercancel", function () { arrastrando = false; });
+      if (rango) rango.addEventListener("input", function () { pintar(parseFloat(rango.value)); });
+
+      pintar(50);
+    });
+  })();
+
   document.addEventListener("keydown", function (ev) {
+    if (ev.target && ev.target.classList && ev.target.classList.contains("swipe__range")) return;
     if (ev.key === "ArrowDown" || ev.key === "PageDown" || ev.key === "ArrowRight") {
       ev.preventDefault();
       ir(actual + 1);
