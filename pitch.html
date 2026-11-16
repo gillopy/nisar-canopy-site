@@ -73,9 +73,29 @@ img { display: block; max-width: 100%; }
   object-position: center;
 }
 
-.panel--contain img {
+.deck__media .panel--contain.is-active {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 28px 24px;
+}
+
+.deck__media .panel--contain img {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: calc(100% - 68px);
   object-fit: contain;
-  padding: 22px;
+}
+
+.deck__media .panel--contain figcaption {
+  position: static;
+  padding: 0;
+  max-width: 52ch;
+  text-align: center;
+  background: none;
 }
 
 .panel figcaption {
@@ -193,8 +213,6 @@ img { display: block; max-width: 100%; }
   border-radius: 999px;
 }
 
-.steps-inline b { color: var(--text); font-weight: 600; }
-
 .close-line {
   margin: 40px 0 0;
   max-width: 22ch;
@@ -286,9 +304,10 @@ img { display: block; max-width: 100%; }
 
   .deck__media::after { background: linear-gradient(180deg, rgba(8, 8, 10, 0) 55%, rgba(8, 8, 10, 0.92) 100%); }
 
-  .panel--contain img { padding: 2vh 3vw; }
+  .deck__media .panel--contain img { padding: 2vh 3vw; }
 
-  .panel figcaption { display: none; }
+  .panel figcaption,
+  .deck__media .panel--contain figcaption { display: none; }
 
   .slide { min-height: 62vh; padding: 7vh 7vw 9vh; }
 
@@ -355,7 +374,7 @@ img { display: block; max-width: 100%; }
   <div class="deck__steps" id="steps">
 
     <section class="slide" data-slide="1">
-      <p class="kicker">01 · El problema</p>
+      <p class="kicker">El problema</p>
       <h1>El desmonte ocurre<br><span class="accent">cuando no se ve</span></h1>
       <p class="lead">
         En el Chaco, la temporada de lluvias tapa el bosque justo cuando avanza el desmonte. La
@@ -367,7 +386,7 @@ img { display: block; max-width: 100%; }
     </section>
 
     <section class="slide" data-slide="2">
-      <p class="kicker">02 · Qué es</p>
+      <p class="kicker">Qué es</p>
       <h2>Una consola abierta para la misión NISAR</h2>
       <p class="lead">
         Dibujás una caja sobre el mapa, elegís dos fechas y la consola devuelve el cambio medido
@@ -377,22 +396,22 @@ img { display: block; max-width: 100%; }
     </section>
 
     <section class="slide" data-slide="3">
-      <p class="kicker">03 · Cómo funciona</p>
+      <p class="kicker">Cómo funciona</p>
       <h2>De una caja a un número, con comprobante</h2>
       <p class="lead">
         Busca las escenas que cruzan la caja, elige el par de fechas y ejecuta el análisis.
         Queda el PNG, el GeoTIFF, el JSON y el plan exacto de comandos.
       </p>
       <ul class="steps-inline">
-        <li><b>01</b> la caja</li>
-        <li><b>02</b> el par de fechas</li>
-        <li><b>03</b> el análisis</li>
-        <li><b>04</b> el comprobante</li>
+        <li>la caja</li>
+        <li>el par de fechas</li>
+        <li>el análisis</li>
+        <li>el comprobante</li>
       </ul>
     </section>
 
     <section class="slide" data-slide="4">
-      <p class="kicker">04 · Qué encuentra</p>
+      <p class="kicker">Qué encuentra</p>
       <h2>262,9 hectáreas <span class="accent">contra 2,1</span></h2>
       <p class="lead">
         Mismo par de imágenes, mismo umbral. El desmonte pierde 262,9 ha; el bosque intacto a
@@ -402,7 +421,7 @@ img { display: block; max-width: 100%; }
     </section>
 
     <section class="slide" data-slide="5">
-      <p class="kicker">05 · Por qué confiar</p>
+      <p class="kicker">Por qué confiar</p>
       <h2>No te pido que me creas</h2>
       <p class="lead">
         Control pareado, barrido de umbral, ventanas de doce días y el óptico sobre la misma
@@ -412,7 +431,7 @@ img { display: block; max-width: 100%; }
     </section>
 
     <section class="slide" data-slide="6">
-      <p class="kicker">06 · A quién le sirve</p>
+      <p class="kicker">A quién le sirve</p>
       <h2>Días de trabajo,<br>en una corrida</h2>
       <p class="lead">
         Hoy medir un desmonte es bajar dos gigas, alinear grillas a mano y repetir todo para la
@@ -424,7 +443,7 @@ img { display: block; max-width: 100%; }
     </section>
 
     <section class="slide" data-slide="7">
-      <p class="kicker">07 · Hasta dónde</p>
+      <p class="kicker">Hasta dónde</p>
       <h2>El radar ya ve de noche y con nubes</h2>
       <p class="lead">
         Falta validación en campo, corrección por ángulo de incidencia y un flujo con alertas.
